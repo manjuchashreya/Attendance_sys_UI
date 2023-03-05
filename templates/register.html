@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="col-lg-12">
+
+  <a href='/admin_dashboard'>
+    <h5 class="text-left">Back</h5>
+  </a>
+</div>
+
+<div class="col-lg-4">
+
+  <form method="POST">
+    <fieldset class="form-group">
+      <legend class="border-bottom mb-4"> Register New Employee </legend>
+    </fieldset>
+
+    <div class="form-group">
+      <button class="btn btn-outline-info" type="submit"> Register</button>
+    </div>
+  </form>
+
+</div>
+
+{% endblock body %}

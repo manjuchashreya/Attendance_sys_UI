@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="col-lg-12" >
+
+  <a href="{% url 'dashboard' %}"><h5 class="text-left">  Dashboard</h5></a>
+</div>
+ 
+<div class="alert alert-danger" role="alert">
+  <h3>Sorry, {{user.username}}. You are not authorised to view this page.</h3>
+</div>
+
+{% endblock body %}
