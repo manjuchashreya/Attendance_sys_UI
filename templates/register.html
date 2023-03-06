@@ -1,25 +1,25 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<div class="col-lg-12">
 
-  <a href='/admin_dashboard'>
-    <h5 class="text-left">Back</h5>
-  </a>
+
+    <a href='/admin_dashboard'>
+      <h5 class="text-left">Back</h5>
+    </a>
+  
+
+<div class="col-lg-7">
+  <h5 class="text-left">Register Form</h5>
+  <form action="{{ url_for('register') }}" method="post">
+    <div class="msg">{{ msg }}</div>
+      <input id="username" name="username" type="text" placeholder="Enter Your Username" class="textbox"/></br></br>
+      <input id="password" name="password" type="password" placeholder="Enter Your Password" class="textbox"/></br></br>
+      <input id="email" name="email" type="text" placeholder="Enter Your Email ID" class="textbox"/></br></br>
+      <input type="submit" class="btn" value="Sign Up"></br>
+    </form>
+    <p class="bottom">Already have an account? <a class="bottom" href="/login"> Sign In here</a></p>
+		
 </div>
 
-<div class="col-lg-4">
-
-  <form method="POST">
-    <fieldset class="form-group">
-      <legend class="border-bottom mb-4"> Register New Employee </legend>
-    </fieldset>
-
-    <div class="form-group">
-      <button class="btn btn-outline-info" type="submit"> Register</button>
-    </div>
-  </form>
-
-</div>
 
 {% endblock body %}
