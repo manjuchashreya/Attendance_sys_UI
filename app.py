@@ -20,7 +20,7 @@ app.secret_key = 'your secret key'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'shreya27'
+app.config['MYSQL_PASSWORD'] = 'PMmodi$$1'
 app.config['MYSQL_DB'] = 'attendance_system'
 
 mysql = MySQL(app)

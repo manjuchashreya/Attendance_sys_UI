@@ -65,18 +65,24 @@ box-shadow:         2px 2px 15px 0px rgba(0, 3, 0, 0.7);
 margin-left:auto; margin-right: auto;
 }
 
-.col-lg-7{
+.login_form_box{
     background: rgba(0,0,0,0.6);
-    margin-top:100px; 
-    padding-top:1em;
-    padding-bottom:3em;
+    margin:10px; 
+    padding:10px 20px;
     color:#fff;
     border-radius:10px;
-    -webkit-box-shadow: 2px 2px 15px 0px rgba(0, 3, 0, 0.7);
--moz-box-shadow:    2px 2px 15px 0px rgba(0, 3, 0, 0.7);
-box-shadow:         2px 2px 15px 0px rgba(0, 3, 0, 0.7); 
-margin-left:auto; 
-margin-right: auto;
+    width: 40%;
+}
+
+.login_form{
+    display: flex;
+    height: 500px;
+    align-items: center;
+    justify-content: center;
+}
+
+.reg-link{
+    color: #008bff;
 }
 
 .img-responsive{
@@ -137,8 +143,31 @@ h4.lgn{
     background: url("../img/tsec-1.png") no-repeat center center/cover ;
     height: 80px;
     z-index: 1;
-    
+
 }
+
+.nav-buttons{
+    background-color: white;
+    display: flex;
+    padding: 5px 60px 0px 5px;
+    font-size: 20px;
+    justify-content: flex-end;
+    font-family: 'Circular-Loom';
+    font-weight: 450;
+}
+
+.nav-buttons a{
+    margin: 5px;
+    margin-bottom: 0px;
+    padding: 5px 10px;
+}
+
+.nav-buttons a:hover{
+    border: 1px solid rgb(207, 206, 206);
+    border-radius: 5px;
+    background-color: rgb(220, 220, 220);
+}
+
 
 footer {
     text-align: center;
