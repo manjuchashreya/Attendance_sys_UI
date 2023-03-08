@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
 
 {% block body %}
+
+
 <div class="col-lg-12">
     <div class="col-sm-12">
-        <h1>Attendance System Using Face Recognition</h1>
+      <a href="{% url 'logout' %}">
+        <h5 class="text-right"><i class="fa fa-user-circle" aria-hidden="true"></i> Logout</h5>
+      </a>
+      <h1 class="student">Welcome, student name</h1>
     </div>
     <div class="row">
         <div class="col-md-4">
@@ -33,3 +38,5 @@
 </div>
 
 {% endblock body %}
+
+

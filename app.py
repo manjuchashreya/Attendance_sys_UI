@@ -20,7 +20,7 @@ app.secret_key = 'your secret key'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'PMmodi$$1'
+app.config['MYSQL_PASSWORD'] = 'shreya27'
 app.config['MYSQL_DB'] = 'attendance_system'
 
 mysql = MySQL(app)
@@ -222,6 +222,10 @@ def train():
 
     return render_template('train.html')
 
+@app.route('/mark_attendance_details',methods=['GET','POST'])
+def mark_attendance_details():
+    return render_template('mark_attendance_details.html')
+
 @app.route('/mark_your_attendance',methods=['GET','POST'])
 def mark_your_attendance():
     class_names = {1:"Shreya",2:"Shreyatwo", 3:"Muskan",4:"Kumkum"}#,2:"Muskan",3:"Balaji",4:"Tejashree"} #name of people
@@ -288,7 +292,10 @@ def mark_your_attendance():
 
 @app.route('/logout',methods=['GET','POST'])
 def logout():
-    return render_template('home.html')
+    session.pop('loggedin', None)
+    session.pop('id', None)
+    session.pop('username', None)
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
