@@ -11,12 +11,31 @@
 <div class="col-lg-7">
   <h5 class="text-left">Register Form</h5>
   <form action="{{ url_for('register') }}" method="post">
-    <div class="msg">{{ msg }}</div>
-      <input id="username" name="username" type="text" placeholder="Enter Your Username" class="textbox"/></br></br>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <div class="message-box">
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endwith %}
+      <input id="tname" name="tname" type="text" placeholder="Enter Your Name" class="textbox"/></br></br>
+      <input id="temail" name="temail" type="text" placeholder="Enter Your Email ID" class="textbox"/></br></br>
       <input id="password" name="password" type="password" placeholder="Enter Your Password" class="textbox"/></br></br>
-      <input id="email" name="email" type="text" placeholder="Enter Your Email ID" class="textbox"/></br></br>
-      <input type="submit" class="btn" value="Sign Up"></br>
+      <div class="form-check-button">
+        <input class="form-check-input" type="checkbox" value="" id="teacher">
+        <label class="form-check-label" for="teacher">Are you teacher?</label>
+      </div>
+      <div class="d-flex flex-column mt-2">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <p class="mt-2 text-center">Don't have an account? <a class="reg-link" href="/register"> <b>Sign Up
+              here</b></a></p>
+      </div>
+
     </form>
+  </div>
+</div></form>
     <p class="bottom">Already have an account? <a class="bottom" href="/login"> Sign In here</a></p>
 		
 </div>
