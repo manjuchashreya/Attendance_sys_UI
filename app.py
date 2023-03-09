@@ -14,13 +14,17 @@ from datetime import datetime
 import csv
 import pandas as pd
 
+
+with open('password.txt') as f:
+    db_password = f.read()
+
 app = Flask(__name__)
 
 app.secret_key = 'your secret key'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'shreya27'
+app.config['MYSQL_PASSWORD'] = db_password
 app.config['MYSQL_DB'] = 'attendance_system'
 
 mysql = MySQL(app)
@@ -80,8 +84,6 @@ def register():
             msg = 'Invalid email address !'
         elif not re.match(r'[A-Za-z0-9]+', tname):
             msg = 'Username must contain only characters and numbers !'
-        elif not tname or not password or not email:
-            msg = 'Please fill out the form !'
         else:
             cursor.execute('INSERT INTO teachers VALUES (NULL, % s, % s, % s)', (tname, email, password, ))
             mysql.connection.commit()

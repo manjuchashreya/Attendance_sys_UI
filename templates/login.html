@@ -25,29 +25,27 @@
 </div>
 
 <div class="login_form">
-
-
   <div class="login_form_box">
-    <h4 class="text-center mb-4">Login for Teachers</h4>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="message-box">
+      {% for message in messages %}
+      <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <h4 class="text-center mb-2">Login</h4>
     <form action="{{ url_for('login') }}" method="post">
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      <div class="message-box">
-        {% for message in messages %}
-        <p>{{ message }}</p>
-        {% endfor %}
-      </div>
-      {% endif %}
-      {% endwith %}
       <div class="mb-3">
         <label for="username" class="form-label">Username</label>
         <input name="username" type="text" class="form-control" placeholder="Enter Your Username" id="username"
-          aria-describedby="emailHelp">
+          aria-describedby="emailHelp" required>
         <div id="emailHelp" class="form-text">Please enter username and password provided by the institute.</div>
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
-        <input id="password" name="password" placeholder="Enter Your Password" type="password" class="form-control">
+        <input id="password" name="password" placeholder="Enter Your Password" type="password" class="form-control" required>
       </div>
       <div class="form-check-button">
         <input class="form-check-input" type="checkbox" value="" id="teacher">
@@ -55,9 +53,9 @@
       </div>
       <div class="d-flex flex-column mt-2">
         <button type="submit" class="btn btn-primary">Submit</button>
-        <p class="mt-2 text-center">Don't have an account? <a class="reg-link" href="/register"> <b>Sign Up
-              here</b></a></p>
       </div>
+      <p class="text-center">Don't have an account? <a class="reg-link" href="/register"> <b>Sign Up
+            here</b></a></p>
 
     </form>
   </div>

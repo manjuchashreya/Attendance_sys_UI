@@ -2,43 +2,47 @@
 
 {% block body %}
 
+<div class="nav-buttons">
+  <a href="/">Home</a>
+  <a href='/admin_dashboard'>Back</a>
+</div>
 
-    <a href='/admin_dashboard'>
-      <h5 class="text-left">Back</h5>
-    </a>
-  
-
-<div class="col-lg-7">
-  <h5 class="text-left">Register Form</h5>
-  <form action="{{ url_for('register') }}" method="post">
+<div class="login_form">
+  <div class="login_form_box">
     {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      <div class="message-box">
-        {% for message in messages %}
-        <p>{{ message }}</p>
-        {% endfor %}
+    {% if messages %}
+    <div class="message-box">
+      {% for message in messages %}
+      <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <h4 class="text-center mb-4">Register Form</h4>
+    <form action="{{ url_for('register') }}" method="post">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input id="tname" name="tname" type="text" class="form-control" placeholder="Enter Your Username"
+          aria-describedby="emailHelp" required>
       </div>
-      {% endif %}
-      {% endwith %}
-      <input id="tname" name="tname" type="text" placeholder="Enter Your Name" class="textbox"/></br></br>
-      <input id="temail" name="temail" type="text" placeholder="Enter Your Email ID" class="textbox"/></br></br>
-      <input id="password" name="password" type="password" placeholder="Enter Your Password" class="textbox"/></br></br>
-      <div class="form-check-button">
-        <input class="form-check-input" type="checkbox" value="" id="teacher">
-        <label class="form-check-label" for="teacher">Are you teacher?</label>
+      <div class="mb-3">
+        <label for="temail" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="temail" name="temail" placeholder="Enter Your Email ID" aria-describedby="emailHelp" required>
       </div>
-      <div class="d-flex flex-column mt-2">
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input id="password" name="password" placeholder="Enter Your Password" type="password" class="form-control" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+        title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+      </div>
+      <div class="d-flex flex-column">
         <button type="submit" class="btn btn-primary">Submit</button>
-        <p class="mt-2 text-center">Don't have an account? <a class="reg-link" href="/register"> <b>Sign Up
-              here</b></a></p>
       </div>
+      <p class="text-center">Already have an account? <a class="reg-link" href="/login"> <b> Sign In here</b></a></p>
 
     </form>
   </div>
-</div></form>
-    <p class="bottom">Already have an account? <a class="bottom" href="/login"> Sign In here</a></p>
-		
 </div>
+
 
 
 {% endblock body %}
