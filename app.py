@@ -86,11 +86,11 @@ def register():
             cursor.execute('INSERT INTO teachers VALUES (NULL, % s, % s, % s)', (username, password, email, ))
             mysql.connection.commit()
             msg = 'You have successfully registered !'
-            return render_template('login.html')
-    elif request.method == 'POST':
-        msg = 'Please fill out the form !'
+            flash(msg)
+            return redirect(url_for('login'))
+        return redirect(url_for('register'))
     else:
-        return render_template('register.html',msg=msg)
+        return render_template('register.html')
     
 @app.route('/admin_dashboard',methods=['GET','POST'])
 def admin_dashboard():

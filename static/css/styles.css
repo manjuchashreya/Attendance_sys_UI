@@ -81,6 +81,12 @@ margin-left:auto; margin-right: auto;
     justify-content: center;
 }
 
+.form-check-button{
+    padding-left: 1.25rem;
+    display: flex;
+    align-items: center;
+}
+
 .reg-link{
     color: #008bff;
 }
