@@ -67,30 +67,32 @@ def login():
 @app.route('/register',methods=['GET','POST'])
 def register():
     msg=''
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form :
-        username = request.form['username']
+    if request.method == 'POST' and 'tname' in request.form and 'password' in request.form and 'temail' in request.form :
+        tname = request.form['tname']
         password = request.form['password']
-        email = request.form['email']
+        email = request.form['temail']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM teachers WHERE username = % s', (username, ))
+        cursor.execute('SELECT * FROM teachers WHERE tname = % s', (tname, ))
         account = cursor.fetchone()
         if account:
             msg = 'Account already exists !'
         elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
             msg = 'Invalid email address !'
-        elif not re.match(r'[A-Za-z0-9]+', username):
+        elif not re.match(r'[A-Za-z0-9]+', tname):
             msg = 'Username must contain only characters and numbers !'
-        elif not username or not password or not email:
+        elif not tname or not password or not email:
             msg = 'Please fill out the form !'
         else:
-            cursor.execute('INSERT INTO teachers VALUES (NULL, % s, % s, % s)', (username, password, email, ))
+            cursor.execute('INSERT INTO teachers VALUES (NULL, % s, % s, % s)', (tname, email, password, ))
             mysql.connection.commit()
             msg = 'You have successfully registered !'
-            return render_template('login.html')
+            flash(msg)
+            return redirect(url_for('login'))
+        return redirect(url_for('register'))
     elif request.method == 'POST':
         msg = 'Please fill out the form !'
     else:
-        return render_template('register.html',msg=msg)
+        return render_template('register.html')
     
 @app.route('/admin_dashboard',methods=['GET','POST'])
 def admin_dashboard():

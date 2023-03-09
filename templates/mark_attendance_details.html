@@ -31,26 +31,28 @@
     <h4 class="text-center mb-4">Details of Attendance</h4>
     <form action="{{ url_for('login') }}" method="post">
       <div class="msg">{{ msg }}</div>
-      <form>
-        <div class="mb-3">
-          <label for="username" class="form-label">Username</label>
-          <input name="username" type="text" class="form-control" placeholder="Enter Your Username" id="username"
-            aria-describedby="emailHelp">
-          <div id="emailHelp" class="form-text">Please enter username and password provided by the institute.</div>
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Select Subject
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#">UID</a>
+          <a class="dropdown-item" href="#">Blockchain</a>
+          <a class="dropdown-item" href="#">SM</a>
+          <a class="dropdown-item" href="#">BDA</a>
         </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input id="password" name="password" placeholder="Enter Your Password" type="password" class="form-control">
+      </div>
+
+      <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+          <div class="btn-group-lg" role="group" aria-label="Third group">
+            <button type="button" class="btn btn-outline-danger">Live</button>
+          </div>
         </div>
-        <!-- </form>
-          <input id="username" name="username" type="text" placeholder="Enter Your Username" class="textbox"/></br></br>
-          <input id="password" name="password" type="password" placeholder="Enter Your Password" class="textbox"/></br></br></br>
-          <input type="submit" class="btn" value="Sign In"></br></br>
-        </form> -->
-        <div class="d-flex flex-column">
-          <button type="submit" class="btn btn-primary">Submit</button>
-          <p class="mt-2 text-center">Don't have an account? <a class="reg-link" href="/register"> <b>Sign Up here</b></a></p>
+        <div class="btn-group" role="group" aria-label="Third group">
+          <button type="button" class="btn btn-outline-success">Static</button>
         </div>
+      </div>
   </div>
 </div>
 
