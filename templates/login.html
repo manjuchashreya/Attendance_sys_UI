@@ -38,17 +38,17 @@
     <h4 class="text-center mb-2">Login</h4>
     <form action="{{ url_for('login') }}" method="post">
       <div class="mb-3">
-        <label for="username" class="form-label">Username</label>
-        <input name="username" type="text" class="form-control" placeholder="Enter Your Username" id="username"
+        <label for="email" class="form-label">Email</label>
+        <input name="email" type="email" class="form-control" placeholder="Enter Your Username" id="email"
           aria-describedby="emailHelp" required>
-        <div id="emailHelp" class="form-text">Please enter username and password provided by the institute.</div>
+        <div id="emailHelp" class="form-text">Please enter email and password provided by the institute.</div>
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
         <input id="password" name="password" placeholder="Enter Your Password" type="password" class="form-control" required>
       </div>
       <div class="form-check-button">
-        <input class="form-check-input" type="checkbox" value="" id="teacher">
+        <input class="form-check-input" type="checkbox" value="1" name="teacher">
         <label class="form-check-label" for="teacher">Are you teacher?</label>
       </div>
       <div class="d-flex flex-column mt-2">

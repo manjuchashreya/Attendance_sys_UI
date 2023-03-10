@@ -52,20 +52,33 @@ def home():
 @app.route('/login',methods=['GET','POST'])
 def login():
     msg=''
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
-        username = request.form['username']
+    if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
+        username = request.form['email']
         password = request.form['password']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM teachers WHERE username = % s AND password = % s', (username, password, ))
-        account = cursor.fetchone()
-        if account:
-            session['loggedin'] = True
-            session['id'] = account['id']
-            session['username'] = account['username']
-            msg = 'Logged in successfully !'
-            return redirect(url_for('admin_dashboard',msg=msg))
+        value=request.form.get('teacher')
+        if value=="1":
+            cursor.execute('SELECT * FROM teachers WHERE temail = % s AND password = % s', (username, password, ))
+            account = cursor.fetchone()
+            if account:
+                session['loggedin'] = True
+                session['tid'] = account['tid']
+                session['tname'] = account['tname']
+                msg = 'Logged in successfully !'
+                return redirect(url_for('admin_dashboard',msg=msg))
+            else:
+                msg = 'Incorrect username / password !'
         else:
-            msg = 'Incorrect username / password !'
+            cursor.execute('SELECT * FROM students WHERE semail = % s AND student_id = % s', (username, password, ))
+            account = cursor.fetchone()
+            if account:
+                session['loggedin'] = True
+                session['student_id'] = account['student_id']
+                session['fname'] = account['fname']
+                msg = 'Logged in successfully !'
+                return redirect(url_for('train',msg=msg))
+            else:
+                msg = 'Incorrect username / password !'
     return render_template('login.html')
     
 @app.route('/register',methods=['GET','POST'])
@@ -99,6 +112,10 @@ def register():
 @app.route('/admin_dashboard',methods=['GET','POST'])
 def admin_dashboard():
     return render_template('admin_dashboard.html')
+
+@app.route('/student_home',methods=['GET','POST'])
+def student_home():
+    return render_template('student_home.html')
 
 @app.route('/register_student',methods=['GET','POST'])
 def register_student():
@@ -297,7 +314,7 @@ def mark_your_attendance():
 @app.route('/logout',methods=['GET','POST'])
 def logout():
     session.pop('loggedin', None)
-    session.pop('id', None)
+    session.pop('tid', None)
     session.pop('username', None)
     return redirect(url_for('home'))
 
