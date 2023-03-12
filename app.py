@@ -65,9 +65,12 @@ def login():
                 session['tid'] = account['tid']
                 session['tname'] = account['tname']
                 msg = 'Logged in successfully !'
-                return redirect(url_for('admin_dashboard',msg=msg))
+                flash(msg)
+                return redirect(url_for('admin_dashboard'))
             else:
-                msg = 'Incorrect username / password !'
+                msg = 'Incorrect Email or password !'
+                flash(msg)
+                return redirect(url_for('login'))
         else:
             cursor.execute('SELECT * FROM students WHERE semail = % s AND student_id = % s', (username, password, ))
             account = cursor.fetchone()
@@ -75,11 +78,14 @@ def login():
                 session['loggedin'] = True
                 session['student_id'] = account['student_id']
                 session['fname'] = account['fname']
-                msg = 'Logged in successfully !'
-                return redirect(url_for('train',msg=msg))
+                return redirect(url_for('home'))
             else:
-                msg = 'Incorrect username / password !'
-    return render_template('login.html')
+                msg = 'Incorrect Email or password !'
+                flash(msg)
+                return redirect(url_for('login'))
+    else:
+        flash(msg)
+        return render_template('login.html')
     
 @app.route('/register',methods=['GET','POST'])
 def register():
