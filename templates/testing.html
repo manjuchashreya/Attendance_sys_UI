@@ -1,141 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-
-    <link rel="stylesheet" href="styles.css">
-    <title>Admin panel</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        
+    <link rel="stylesheet" href="../static/css/styles.css" type="text/css" />
 </head>
 
 <body>
-    <div class="container">
-        <div class="topbar">
-            <div class="logo">
-                <h2>Brand.</h2>
-            </div>
-            <div class="search">
-                <input type="text" name="search" placeholder="search here">
-                <label for="search"><i class="fas fa-search"></i></label>
-            </div>
-            <i class="fas fa-bell"></i>
-            <div class="user">
-                <img src="img/user.png" alt="">
-            </div>
+    <nav>
+        <div class="navbar-personal">
         </div>
-        <div class="sidebar">
-            <ul>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-th-large"></i>
-                        <div>Dashboard</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-user-graduate"></i>
-                        <div>Students</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                        <div>Teachers</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-users"></i>
-                        <div>Employees</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-chart-bar"></i>
-                        <div>Analytics</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-hand-holding-usd"></i>
-                        <div>Earnings</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-cog"></i>
-                        <div>Settings</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-question"></i>
-                        <div>Help</div>
-                    </a>
-                </li>
-            </ul>
+    </nav>
+
+    
+
+<!--
+<div class="row">
+  <div class="col-md-4">
+    <h5>For students</h5>
+  <form class="student" action="{{ url_for('login') }}" method="post">
+    <div class="msg">{{ msg }}</div>
+      <input id="username" name="username" type="text" placeholder="Enter Your Username" class="textbox"/></br></br>
+      <input id="password" name="password" type="password" placeholder="Enter Your Password" class="textbox"/></br></br></br>
+      <input type="submit" class="btn" value="Sign In"></br></br>
+    </form>
+</div>
+<div class="col-md-4">
+  <h5>For teachers</h5>
+
+  -->
+
+  <div class="nav-buttons">
+    <a href="/">Home</a>
+    <a href="/">Back</a>
+  </div>
+
+<div class="login_form">
+
+
+  <div class="login_form_box">
+    <h4 class="text-center mb-4">Details of Attendance</h4>
+    <form action="{{ url_for('login') }}" method="post">
+      <div class="msg">{{ msg }}</div>
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Select Subject
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#">UID</a>
+          <a class="dropdown-item" href="#">Blockchain</a>
+          <a class="dropdown-item" href="#">SM</a>
+          <a class="dropdown-item" href="#">BDA</a>
         </div>
-        <div class="main">
-            <div class="cards">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="number">1217</div>
-                        <div class="card-name">Students</div>
-                    </div>
-                    <div class="icon-box">
-                        <i class="fas fa-user-graduate"></i>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <div class="number">42</div>
-                        <div class="card-name">Teachers</div>
-                    </div>
-                    <div class="icon-box">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <div class="number">68</div>
-                        <div class="card-name">Employees</div>
-                    </div>
-                    <div class="icon-box">
-                        <i class="fas fa-users"></i>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <div class="number">$4500</div>
-                        <div class="card-name">Earnings</div>
-                    </div>
-                    <div class="icon-box">
-                        <i class="fas fa-dollar-sign"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="charts">
-                <div class="chart">
-                    <h2>Earnings (past 12 months)</h2>
-                    <div>
-                        <canvas id="lineChart"></canvas>
-                    </div>
-                </div>
-                <div class="chart doughnut-chart">
-                    <h2>Employees</h2>
-                    <div>
-                        <canvas id="doughnut"></canvas>
-                    </div>
-                </div>
-            </div>
+      </div>
+
+      <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+          <div class="btn-group-lg" role="group" aria-label="Third group">
+            <button type="button" class="btn btn-outline-danger">Live</button>
+          </div>
         </div>
+        <div class="btn-group" role="group" aria-label="Third group">
+          <button type="button" class="btn btn-outline-success">Static</button>
+          <form action="{{ url_for('mark_attendance_details') }}" method="post">
+            <input type="file" id="myFile" name="filename">
+            <input type="submit">
+          </form>
+        </div>
+      </div>
+  </div>
+</div>
+
+<div class="jumbotron" style="margin-top:20px;padding:20px;">    
+    <p><span id="errorMsg"></span></p>    
+    <div class="row">    
+        <div class="col-lg-6">    
+            <!-- Here we streaming video from webcam -->    
+            <h4>    
+                Video coming from Webcam  <button class="btn btn-primary" id="btnCapture">Capture to Canvas >></button>    
+            </h4>    
+            <video id="video" playsinline autoplay></video>    
+        </div>    
+    
+        <div class="col-lg-6">    
+            <h4>    
+                Captured image from Webcam <input type="button" class="btn btn-primary" id="btnSave" name="btnSave" value="Save the canvas(image) to server" />    
+            </h4>    
+            <!-- Webcam video snapshot -->    
+            <canvas style="border:solid 1px #ddd;background-color:white;" id="canvas" width="475" height="475"></canvas>    
+        </div>    
+    </div>    
+</div> 
+
+
+<footer id="colophon" class="footer footer_type_default footer_compact">
+    <div class="copyright">Thadomal Shahani Engineering College. (TSEC). All Rights Reserved.<br>
+        <p>Developed and Maintained by DigiLog.</p>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
-    <script src="chart1.js"></script>
-    <script src="chart2.js"></script>
+</footer>
+<script type="text/javascript">  
+    var video = document.querySelector("#video");  
+  
+    // Basic settings for the video to get from Webcam  
+    const constraints = {  
+        audio: false,  
+        video: {  
+            width: 475, height: 475  
+        }  
+    };  
+  
+    // This condition will ask permission to user for Webcam access  
+    if (navigator.mediaDevices.getUserMedia) {  
+        navigator.mediaDevices.getUserMedia(constraints)  
+            .then(function (stream) {  
+                video.srcObject = stream;  
+            })  
+            .catch(function (err0r) {  
+                console.log("Something went wrong!");  
+            });  
+    }  
+  
+    function stop(e) {  
+        var stream = video.srcObject;  
+        var tracks = stream.getTracks();  
+  
+        for (var i = 0; i < tracks.length; i++) {  
+            var track = tracks[i];  
+            track.stop();  
+        }  
+        video.srcObject = null;  
+    }  
+</script>  
+  
+<script type="text/javascript">  
+    // Below code to capture image from Video tag (Webcam streaming)  
+    $("#btnCapture").click(function () {  
+        var canvas = document.getElementById('canvas');  
+        var context = canvas.getContext('2d');  
+  
+        // Capture the image into canvas from Webcam streaming Video element  
+        context.drawImage(video, 0, 0);  
+    });  
+  
+    // Upload image to server - ajax call - with the help of base64 data as a parameter  
+    $("#btnSave").click(function () {  
+  
+        // Below new canvas to generate flip/mirron image from existing canvas  
+        var destinationCanvas = document.createElement("canvas");  
+        var destCtx = destinationCanvas.getContext('2d');  
+  
+  
+        destinationCanvas.height = 500;  
+        destinationCanvas.width = 500;  
+  
+        destCtx.translate(video.videoWidth, 0);  
+        destCtx.scale(-1, 1);  
+        destCtx.drawImage(document.getElementById("canvas"), 0, 0);  
+  
+        // Get base64 data to send to server for upload  
+        var imagebase64data = destinationCanvas.toDataURL("image/png");  
+        imagebase64data = imagebase64data.replace('data:image/png;base64,', '');  
+        $.ajax({  
+            type: 'POST',  
+            url: '/Home/UploadWebCamImage',  
+            data: '{ "imageData" : "' + imagebase64data + '" }',  
+            contentType: 'application/json; charset=utf-8',  
+            dataType: 'text',  
+            success: function (out) {  
+                alert('Image uploaded successfully..');  
+            }  
+        });  
+    });  
+</script>  
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
 </body>
 
 </html>

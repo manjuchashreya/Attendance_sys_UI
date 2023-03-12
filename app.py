@@ -120,24 +120,30 @@ def student_home():
 @app.route('/register_student',methods=['GET','POST'])
 def register_student():
     msg=''
-    if request.method == 'POST' and 'sid' in request.form and 'name' in request.form and 'dob' in request.form and 's_email' in request.form :
-        sid=request.form['sid']
-        name = request.form['name']
-        dob = request.form['dob']
-        s_email = request.form['s_email']
+    if request.method == 'POST' and 'student_id' in request.form and 'fname' in request.form and 'pno' in request.form and 'semail' in request.form and 'optsub1' in request.form :
+        sid=request.form['student_id']
+        name = request.form['fname']
+        pno = request.form['pno']
+        semail = request.form['semail']
+        #optsub1=request.form['optsub1']
+        val=request.form.get('optsub1')
+        if val=="1":
+            val="BDA"
+        elif val=="2":
+            val="SM"
+        print(val)
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM students WHERE name = % s', (name, ))
+        cursor.execute('SELECT * FROM students WHERE fname = % s', (name, ))
         account = cursor.fetchone()
         if account:
             msg = 'Account already exists!'
-        elif not re.match(r'[^@]+@[^@]+\.[^@]+', s_email):
+        elif not re.match(r'[^@]+@[^@]+\.[^@]+', semail):
             msg = 'Invalid email address !'
-        elif not re.match(r'[A-Za-z0-9]+', name):
-            msg = 'Username must contain only characters and numbers !'
-        elif not name or not dob or not s_email or not sid:
+        elif not name or not pno or not semail or not sid:
             msg = 'Please fill out the form !'
         else:
-            cursor.execute('INSERT INTO students VALUES (% s, % s, % s, % s)', (sid ,name, dob, s_email, ))
+            print("shreya")
+            cursor.execute('INSERT INTO students VALUES (% s, % s, % s, % s, % s)', (sid ,name, pno, semail, val, ))
             mysql.connection.commit()
             msg = 'You have successfully registered!'
             return render_template('admin_dashboard.html')
@@ -151,13 +157,13 @@ def register_student():
 @app.route('/add_photos',methods=['GET','POST'])
 def add_photos():
     if request.method == 'POST' and 'name' in request.form and 'sid' in request.form:
-        name = request.form['name']
+        fname = request.form['name']
         face_id=request.form['sid']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM students WHERE name = % s', (name, ))
+        cursor.execute('SELECT * FROM students WHERE fname = % s', (fname, ))
         account = cursor.fetchone()
         if account:
-            session['name'] = account['name']
+            session['fname'] = account['fname']
             vid_cam = cv2.VideoCapture(0)
             face_detector = cv2.CascadeClassifier(cv2.data.haarcascades +'haarcascade_frontalface_default.xml')
             count = 0
@@ -166,39 +172,39 @@ def add_photos():
                 # Capture video frame
                 _, image_frame = vid_cam.read()
 
-    # Convert frame to grayscale
+                # Convert frame to grayscale
                 gray = cv2.cvtColor(image_frame, cv2.COLOR_BGR2GRAY)
 
-    # Detect frames of different sizes, list of faces rectangles
+                # Detect frames of different sizes, list of faces rectangles
                 faces = face_detector.detectMultiScale(gray, 1.3, 5)
 
-    # Loops for each faces
+                # Loops for each faces
                 for (x, y, w, h) in faces:
-        # Crop the image frame into rectangle
+                    # Crop the image frame into rectangle
                     cv2.rectangle(image_frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
-        # Increment sample face image
+                    # Increment sample face image
                     count += 1
 
-        # Save the captured image into the datasets folder
+                    # Save the captured image into the datasets folder
                     cv2.imwrite("data/User." + str(face_id) + '.' + str(count) + ".jpg", gray[y:y + h, x:x + w])
 
-        # Display the video frame, with bounded rectangle on the person's face
+                    # Display the video frame, with bounded rectangle on the person's face
                     cv2.imshow('frame', image_frame)
 
-    # To stop taking video, press 'q' for at least 100ms
+                 # To stop taking video, press 'q' for at least 100ms
                 if cv2.waitKey(100) & 0xFF == ord('q'):
                     break
 
-    # If image taken reach 100, stop taking video
+                # If image taken reach 100, stop taking video
                 elif count >= 50:
                     print("Successfully Captured")
                     break
 
-# Stop video
+            # Stop video
             vid_cam.release()
 
-# Close all started windows
+            # Close all started windows
             cv2.destroyAllWindows()
             return render_template('admin_dashboard.html')
         else:
@@ -246,6 +252,11 @@ def train():
 @app.route('/mark_attendance_details',methods=['GET','POST'])
 def mark_attendance_details():
     return render_template('mark_attendance_details.html')
+
+@app.route('/teacher_dashboard',methods=['GET','POST'])
+def teacher_dashboard():
+    return render_template('teacher_dashboard.html')
+
 
 @app.route('/mark_your_attendance',methods=['GET','POST'])
 def mark_your_attendance():

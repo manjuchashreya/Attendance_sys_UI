@@ -6,20 +6,57 @@
   <a href='/admin_dashboard'>Back</a>
 </div>
 
-
-<div class="col-lg-7">
-  <h5 class="text-left">Register Form</h5>
-  <form action="{{ url_for('register_student') }}" method="post">
-    <div class="msg">{{ msg }}</div>
-    <input id="sid" name="sid" type="text" placeholder="Enter Students Roll No" class="textbox"/></br></br>
-      <input id="name" name="name" type="text" placeholder="Enter Students Name" class="textbox"/></br></br>
-      <input id="dob" name="dob" type="dob" placeholder="Enter Students DOB" class="textbox"/></br></br>
-      <input id="s_email" name="s_email" type="text" placeholder="Enter Students Email ID" class="textbox"/></br></br>
-      <input type="submit" class="btn" value="Register"></br>
+<div class="login_form">
+  <div class="login_form_box">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="message-box">
+      {% for message in messages %}
+      <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <h4 class="text-center mb-4">Register Form</h4>
+    <form action="{{ url_for('register_student') }}" method="post">
+      <div class="mb-3">
+        <label for="umbid" class="form-label">Student's UMBID</label>
+        <input id="student_id" name="student_id" type="text" class="form-control" placeholder="Enter Student's UMBID"
+          aria-describedby="emailHelp" required>
+      </div>
+      <div class="mb-3">
+        <label for="name" class="form-label">Student's Full Name</label>
+        <input id="fname" name="fname" type="text" class="form-control" placeholder="Enter Student's Full Name"
+          aria-describedby="emailHelp" required>
+      </div>
+      <div class="mb-3">
+        <label for="pnumber" class="form-label">Student's Phone Number</label>
+        <input id="pno" name="pno" type="text" class="form-control" placeholder="Enter Student's Phone Number"
+          aria-describedby="emailHelp" required>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Student's Email address</label>
+        <input type="email" class="form-control" id="semail" name="semail" placeholder="Enter Student's Email ID" aria-describedby="emailHelp" required>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Student's Optional Subject</label>
+       
+        <select class="form-select" name="optsub1">
+          <option selected>Optional Subject</option>
+          <option value="1" >BDA</option>
+          <option value="2">SM</option>
+        </select>
+      </div>
+      
+      <div class="d-flex flex-column">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+      
     </form>
-  
-		
+  </div>
 </div>
+
+
 
 
 {% endblock body %}

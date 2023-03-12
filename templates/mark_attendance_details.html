@@ -51,6 +51,10 @@
         </div>
         <div class="btn-group" role="group" aria-label="Third group">
           <button type="button" class="btn btn-outline-success">Static</button>
+          <form action="{{ url_for('mark_attendance_details') }}" method="post">
+            <input type="file" id="myFile" name="filename">
+            <input type="submit">
+          </form>
         </div>
       </div>
   </div>
