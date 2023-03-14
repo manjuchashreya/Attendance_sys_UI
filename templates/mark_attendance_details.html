@@ -20,6 +20,13 @@
       </button>
 
       <form action="/upload" method="post" enctype="multipart/form-data">
+        <select class="form-control" name="subjopt">
+          <option selected>Select Subject</option>
+          <option value="UID">UID</option>
+          <option value="Blockchain">Blockchain</option>
+          <option value="SM">SM</option>
+          <option value="BDA">BDA</option>
+        </select>
         <div class="dropdown-menu btn-block" aria-labelledby="dropdownMenuButton">
           <div class="form-group dropdown-item btn-block">
             <label for="studentImg">Upload Student Image</label>
@@ -27,19 +34,14 @@
             <button type="submit" class="mt-2 btn btn-outline-danger">Upload</button>
           </div>
         </div>
+       
       </form>
 
     </div>
-    <form action="{{ url_for('login') }}" method="post">
+    <form action="/upload" method="post">
       <div class="msg">{{ msg }}</div>
 
-      <select class="form-control">
-        <option selected>Select Subject</option>
-        <option value="1">UID</option>
-        <option value="2">Blockchain</option>
-        <option value="3">SM</option>
-        <option value="3">BDA</option>
-      </select>
+      
 
 
         <a href="/live" type="button" class="mt-2 btn btn-outline-danger btn-lg btn-block">Live</a>

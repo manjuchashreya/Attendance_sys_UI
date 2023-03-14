@@ -369,7 +369,7 @@ def upload():
     cap.set(4,480) # set Height'''
     font = cv2.FONT_HERSHEY_SIMPLEX
     face_classifier = cv2.CascadeClassifier(cv2.data.haarcascades +"haarcascade_frontalface_default.xml")
-    sub_name="SM"
+   # sub_name="SM"
     if request.method == 'POST':
         # check if the post request has the file part
         if 'studentImg' not in request.files:
@@ -395,7 +395,10 @@ def upload():
 
             # Using HaarCascasde detect multiple faces
             faces = face_classifier.detectMultiScale(gray,1.3,5) #Scaling factor = 1.3 , minNeighbors = 5
-            
+
+        if request.method == 'POST':
+            sub_name=request.form.get('subjopt')
+            print(sub_name)  
             for (x,y,w,h) in faces:
                 cv2.rectangle(cap,(x,y),(x+w,y+h),(255,0,0),2)
                 cropped_image = cap[y:y+h, x:x+w] 
@@ -404,14 +407,23 @@ def upload():
                 # Using LPBH model recognise the detected faces
                 predictions = lbph_face_classifier.predict(color_img)
                 print(predictions)
-                value=int(predictions[0])
+                sid=predictions[0]
                 name= class_names[predictions[0]]
                 cv2.putText(cap, class_names[predictions[0]], (x+5,y-5), font, 1, (255,0,255), 2)
                 cv2.putText(cap, str(round(predictions[1],2))+"%", (x+5,y+h-5), font, 1, (255,255,0), 1)
                 if class_names[predictions[0]] in class_names.values():
-                        val=str(class_names[predictions[0]])
-                        print(val)
-                        print("yes")
+                    val=str(class_names[predictions[0]])
+                    print(val)
+                    print("yes")
+
+                    
+                    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                    cursor.execute('SELECT * FROM students WHERE student_id = % s', (sid, ))
+                    account = cursor.fetchone()
+                    if account:
+                        cursor.execute('INSERT INTO attendance VALUES (NULL, % s, % s, % s,% s, % s, % s)', (current_date,current_time, sid, val,sub_name,"Present"))
+                        mysql.connection.commit()
+
                         #current_time = now.strftime("%H-%M-%S")
                         #lnwriter.writerow([val,current_date])
 
@@ -423,8 +435,8 @@ def upload():
             directory = "LPBH_model_results"
             path=os.path.join(parent,directory)
             os.makedirs(path,exist_ok=True)
-            file_name = input('Enter name to save the result:')
-            file_name_path=f"Results/{directory}/{file_name}.jpg"
+            #file_name = input('Enter name to save the result:')
+            file_name_path=f"Results/{directory}/{sid}.jpg"
             cv2.imwrite(f'{file_name_path}',cap)
 
             # Destroy all windows and return to menu
