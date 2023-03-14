@@ -3,22 +3,6 @@
 {% block body %}
 
 
-<!--
-<div class="row">
-  <div class="col-md-4">
-    <h5>For students</h5>
-  <form class="student" action="{{ url_for('login') }}" method="post">
-    <div class="msg">{{ msg }}</div>
-      <input id="username" name="username" type="text" placeholder="Enter Your Username" class="textbox"/></br></br>
-      <input id="password" name="password" type="password" placeholder="Enter Your Password" class="textbox"/></br></br></br>
-      <input type="submit" class="btn" value="Sign In"></br></br>
-    </form>
-</div>
-<div class="col-md-4">
-  <h5>For teachers</h5>
-
-  -->
-
   <div class="nav-buttons">
     <a href="/">Home</a>
     <a href="/">Back</a>
@@ -31,19 +15,34 @@
     <h4 class="text-center mb-4">Details of Attendance</h4>
     <form action="{{ url_for('login') }}" method="post">
       <div class="msg">{{ msg }}</div>
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Select Subject
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="#">UID</a>
-          <a class="dropdown-item" href="#">Blockchain</a>
-          <a class="dropdown-item" href="#">SM</a>
-          <a class="dropdown-item" href="#">BDA</a>
-        </div>
-      </div>
 
-      <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+      <select class="form-control">
+        <option selected>Select Subject</option>
+        <option value="1">UID</option>
+        <option value="2">Blockchain</option>
+        <option value="3">SM</option>
+        <option value="3">BDA</option>
+      </select>
+
+
+        <button type="button" class="mt-2 btn btn-outline-danger btn-lg btn-block">Live</button>
+        <div class="dropdown mt-2">
+          <button class="btn btn-outline-success btn-lg btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Static
+          </button>
+          <div class="dropdown-menu btn-block" aria-labelledby="dropdownMenuButton">
+            <div class="form-group dropdown-item btn-block">
+              <label for="studentImg">Upload Student Image</label>
+              <input type="file" class="form-control-file" id="studentImg" name="studentImg">
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center mt-2">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+
+    </form>
+      <!-- <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
         <div class="btn-group mr-2" role="group" aria-label="First group">
           <div class="btn-group-lg" role="group" aria-label="Third group">
             <a href="/live" type="button" class="btn btn-outline-danger">Live</a>
@@ -56,7 +55,7 @@
             <input type="submit">
           </form>
         </div>
-      </div>
+      </div> -->
   </div>
 </div>
 
