@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <link rel="stylesheet" href="../static/css/styles.css" type="text/css" />
-  <link rel="stylesheet" href="../static/css/Tstyle.css"/>
+  <link rel="stylesheet" href="../static/css/Tstyle.css" />
   <!-- Font Awesome Cdn Link -->
-  <script src ="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
-<script src ="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js" integrity="sha512-42PE0rd+wZ2hNXftlM78BSehIGzezNeQuzihiBCvUEB3CVxHvsShF86wBWwQORNxNINlBPuq7rG4WWhNiTVHFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"
+    integrity="sha512-42PE0rd+wZ2hNXftlM78BSehIGzezNeQuzihiBCvUEB3CVxHvsShF86wBWwQORNxNINlBPuq7rG4WWhNiTVHFg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<script src ="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>  
-<link rel ="stylesheet" href ="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
-<link rel ="stylesheet" href ="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">  
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 </head>
+
 <body>
   <nav>
     <div class="navbar-personal">
@@ -24,112 +30,111 @@
   </nav>
   <div class="nav-buttons">
     <a href="/">Home</a>
-    <a href="/">Back</a>
+    <a href="/admin_dashboard">Back</a>
   </div>
   <div class="container">
 
     <section class="main">
-      
+
+      <form action="/fetch_Attendance" method="post">
       <div class="main">
-        <div class="cards">
+
+
+          <div class="cards">
             <div class="card">
-                <div class="card-content">
-                  <label class="form-check-label" for="flexCheckDefault">
-                    Choose Subject
+              <div class="card-content">
+                <label class="form-check-label" for="ChooseSubject">
+                  Choose Subject
+                </label>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="UID" id="UID" name="UID">
+                  <label class="form-check-label" for="UID">
+                    UID
                   </label>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="subj1">
-                    <label class="form-check-label" for="flexCheckDefault">
-                      UID
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="subj2">
-                    <label class="form-check-label" for="flexCheckChecked">
-                      Blockchain
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="subj1">
-                    <label class="form-check-label" for="flexCheckDefault">
-                      SM
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="subj1">
-                    <label class="form-check-label" for="flexCheckDefault">
-                      BDA
-                    </label>
-                  </div>
-                    </div>
-                <div class="icon-box">
-                    <i class="fas fa-user-graduate"></i>
                 </div>
-            </div>
-            <div class="card">
-                <div class="card-content" >
-                  
-                    
-                       <div class="form-group">
-                        <label>Enter Start Date</label>
-                          <div class='input-group date' id='datetimepicker6'>
-                            
-                             <input type='text' class="form-control" />
-                             
-                             <span class="input-group-addon">
-                             <span class="glyphicon glyphicon-calendar"></span>
-                             </span>
-                          </div>
-                       </div>
-                    
-                    
-                       <div class="form-group">
-                        <label>Enter End Date</label>
-                          <div class='input-group date' id='datetimepicker7'>
-                             <input type='text' class="form-control" />
-                             <span class="input-group-addon">
-                             <span class="glyphicon glyphicon-calendar"></span>
-                             </span>
-                          </div>
-                       </div>
-                       
-                 
-                
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="Blockchain" id="Blockchain" name="Blockchain">
+                  <label class="form-check-label" for="Blockchain">
+                    Blockchain
+                  </label>
                 </div>
-                <div class="icon-box">
-                  <i class="fas fa-chalkboard-teacher"></i>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="SM" id="SM" name="SM">
+                  <label class="form-check-label" for="SM">
+                    SM
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="BDA" id="BDA" name="BDA">
+                  <label class="form-check-label" for="BDA">
+                    BDA
+                  </label>
+                </div>
+              </div>
+              <div class="icon-box">
+                <i class="fas fa-user-graduate"></i>
               </div>
             </div>
-           
-            
-        </div>
-        
-        </div>
+            <div class="card">
+              <div class="card-content">
 
 
-        
+                <div class="form-group">
+                  <label>Enter Start Date</label>
+                  <div class='input-group date' id='datetimepicker6'>
+
+                    <input type='text' class="form-control" name="start"/>
+
+                    <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <label>Enter End Date</label>
+                  <div class='input-group date' id='datetimepicker7'>
+                    <input type='text' class="form-control" name="end"/>
+                    <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="icon-box">
+                <i class="fas fa-chalkboard-teacher"></i>
+              </div>
+            </div>
+          </div>
+      </div>
+
+
+
       <div class="users">
         <div class="card">
-          
+
           <h4>Today's Statistics</h4>
-          
+
           <div class="per">
-            
+
+          </div>
+          <button type="submit">Refresh</button>
+        </div>
+
+        <!-- <div class="card">
+
+          <h4>Today's Statistics</h4>
+
+          <div class="per">
+
           </div>
           <button>Refresh</button>
-        </div>
-        
-        <div class="card">
-          
-          <h4>Today's Statistics</h4>
-          
-          <div class="per">
-            
-          </div>
-          <button>Refresh</button>
-        </div>
-       
+        </div> -->
+
       </div>
+
+    </form>
 
       <section class="attendance">
         <div class="attendance-list">
@@ -142,7 +147,7 @@
                 <th>Subject</th>
                 <th>Date</th>
                 <th>Time</th>
-                
+
               </tr>
             </thead>
             <tbody>
@@ -152,7 +157,7 @@
                 <td>Design</td>
                 <td>03-24-22</td>
                 <td>8:00AM</td>
-                
+
               </tr>
               <tr class="active">
                 <td>02</td>
@@ -160,7 +165,7 @@
                 <td>Coding</td>
                 <td>03-24-22</td>
                 <td>9:00AM</td>
-              
+
               </tr>
               <tr>
                 <td>03</td>
@@ -168,14 +173,14 @@
                 <td>testing</td>
                 <td>03-24-22</td>
                 <td>8:00AM</td>
-                </tr>
+              </tr>
               <tr>
                 <td>04</td>
                 <td>Sara David</td>
                 <td>Design</td>
                 <td>03-24-22</td>
                 <td>8:00AM</td>
-               </tr>
+              </tr>
               <!-- <tr >
                 <td>05</td>
                 <td>Salina</td>
@@ -203,22 +208,23 @@
 
   <footer id="colophon" class="footer footer_type_default footer_compact">
     <div class="copyright">Thadomal Shahani Engineering College. (TSEC). All Rights Reserved.<br>
-        <p>Developed and Maintained by DigiLog.</p>
+      <p>Developed and Maintained by DigiLog.</p>
     </div>
-</footer>
+  </footer>
   <script type="text/javascript">
     $(function () {
-        $('#datetimepicker6').datetimepicker();
-        $('#datetimepicker7').datetimepicker({
-    useCurrent: false //Important! See issue #1075
+      $('#datetimepicker6').datetimepicker();
+      $('#datetimepicker7').datetimepicker({
+        useCurrent: false //Important! See issue #1075
+      });
+      $("#datetimepicker6").on("dp.change", function (e) {
+        $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+      });
+      $("#datetimepicker7").on("dp.change", function (e) {
+        $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+      });
     });
-        $("#datetimepicker6").on("dp.change", function (e) {
-            $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
-        });
-        $("#datetimepicker7").on("dp.change", function (e) {
-            $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
-        });
-    });
- </script>
+  </script>
 </body>
+
 </html>

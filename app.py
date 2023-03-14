@@ -139,7 +139,6 @@ def register_student():
         name = request.form['fname']
         pno = request.form['pno']
         semail = request.form['semail']
-        #optsub1=request.form['optsub1']
         val=request.form.get('optsub1')
         if val=="1":
             val="BDA"
@@ -450,6 +449,28 @@ def upload():
                 #lnwriter.writerow([val,current_time])
             
 
+@app.route('/fetch_Attendance', methods=['GET','POST'])
+def fetch_Attendance():
+    if request.method == 'POST':
+        UID = request.form.get('UID') # [u'Item 1'] []
+        Blockchain = request.form.get('Blockchain') # [u'Item 2'] []
+        SM = request.form.get('SM') # [u'Item 3'] []
+        BDA = request.form.get('BDA')
+        startDate = request.form.get('start')
+        endDate = request.form.get('end')
+        print(UID,Blockchain,SM,BDA,startDate,endDate)
+        sd = startDate.split(" ")
+        sd1 = sd[0].split('/')
+        sd2 = f'{sd1[2]}-{sd1[0]}-{sd1[1]}'
+        ed = endDate.split(" ")
+        ed1 = ed[0].split('/')
+        ed2 = f'{ed1[2]}-{ed1[0]}-{ed1[1]}'
+        print(sd2,ed2)
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute(f'SELECT * FROM attendance WHERE subject_name = "{UID}" OR subject_name = "{Blockchain}" OR subject_name = "{SM}" OR subject_name = "{BDA}" AND date BETWEEN "{sd2}" AND "{ed2}"')
+        attendance = cursor.fetchall()
+        print(attendance)
+        return redirect(url_for('teacher_dashboard'))
     
 
 @app.route('/mark_your_attendance',methods=['GET','POST'])
