@@ -15,9 +15,10 @@ import csv
 import pandas as pd
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = './upload_Img'
-# UPLOAD_FOLDER = 'C:\\Muskan_Academic_Projects\\sem7 Mini Project\\Majort BE project\\Project 2\\UI\\UI\\Attendance_sys_UI\\upload_Img'
+
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+
+class_names = {1:"Shreya",2:"Shreyatwo", 3:"Muskan",4:"Kumkum", 1903064:"shreya3" , 1903032: "Muskan Gupta"}#,2:"Muskan",3:"Balaji",4:"Tejashree"} #name of people
 
 with open('password.txt') as f:
     db_password = f.read()
@@ -351,7 +352,7 @@ def live():
 
 @app.route('/upload',methods=['GET','POST'])
 def upload():
-    class_names = {1:"Shreya",2:"Shreyatwo", 3:"Muskan",4:"Kumkum", 1903064:"shreya3"}#,2:"Muskan",3:"Balaji",4:"Tejashree"} #name of people
+    # class_names = {1:"Shreya",2:"Shreyatwo", 3:"Muskan",4:"Kumkum", 1903064:"shreya3"}#,2:"Muskan",3:"Balaji",4:"Tejashree"} #name of people
     now = datetime.now()
     current_date = now.strftime("%Y-%m-%d")
     current_time = now.strftime("%H:%M:%S")
@@ -383,15 +384,11 @@ def upload():
             print('No selected file')
             return redirect(url_for('mark_attendance_details'))
         if Uploaded_file and allowed_file(Uploaded_file.filename):
-            filename1 = secure_filename(Uploaded_file.filename)
             Uploaded_file.save(os.path.join('./upload_Img', secure_filename(Uploaded_file.filename)))
-            # path = os.path.join(, filename1.filename)
-            # Uploaded_file.save(path)
-            # Uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             print('Image Uploaded successfully!!')
     
             # Read the image
-            cap = cv2.imread(f"upload_Img/{filename}")
+            cap = cv2.imread(f"upload_Img/{Uploaded_file.filename}")
 
             # Convert it to GrayScale Image
             gray = cv2.cvtColor(cap,cv2.COLOR_BGR2GRAY)
