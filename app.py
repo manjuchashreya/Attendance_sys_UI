@@ -13,6 +13,7 @@ import tensorflow as tf
 from datetime import datetime
 import csv
 import pandas as pd
+from werkzeug.utils import secure_filename
 
 
 with open('password.txt') as f:
@@ -33,6 +34,9 @@ def assure_path_exists(path):
     dir = os.path.dirname(path)
     if not os.path.exists(dir):
         os.makedirs(dir)
+
+def allowed_file(filename):     
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/',methods=['GET','POST'])
 def home():
@@ -162,6 +166,7 @@ def register_student():
 
 @app.route('/add_photos',methods=['GET','POST'])
 def add_photos():
+    msg=''
     if request.method == 'POST' and 'name' in request.form and 'sid' in request.form:
         fname = request.form['name']
         face_id=request.form['sid']
@@ -205,6 +210,8 @@ def add_photos():
                 # If image taken reach 100, stop taking video
                 elif count >= 50:
                     print("Successfully Captured")
+                    msg='Successfully Captured'
+                    flash(msg)
                     break
 
             # Stop video
@@ -215,6 +222,7 @@ def add_photos():
             return render_template('admin_dashboard.html')
         else:
             msg = 'Incorrect name'
+            flash(msg)
     return render_template('add_photos.html')
 
 @app.route('/create_dataset',methods=['GET','POST'])
@@ -263,6 +271,169 @@ def mark_attendance_details():
 def teacher_dashboard():
     return render_template('teacher_dashboard.html')
 
+@app.route('/live',methods=['GET','POST'])
+def live():
+    class_names = {1:"Shreya",2:"Shreyatwo", 3:"Muskan",4:"Kumkum", 1903064:"shreya3"}#,2:"Muskan",3:"Balaji",4:"Tejashree"} #name of people
+    now = datetime.now()
+    current_date = now.strftime("%Y-%m-%d")
+    current_time = now.strftime("%H:%M:%S")
+    print(current_date)
+    # load the model from disk
+    filename = "model1.yml"
+    
+    f = pd.read_csv('attendance.csv')
+    # Initialize LPBH model object and load the model
+    lbph_face_classifier = cv2.face.LBPHFaceRecognizer_create()
+    lbph_face_classifier.read(filename)
+    cap=cv2.VideoCapture(0)
+    cap.set(3,640) # set Width
+    cap.set(4,480) # set Height'''
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    face_classifier = cv2.CascadeClassifier(cv2.data.haarcascades +"haarcascade_frontalface_default.xml")
+    sub_name="SM"
+    while True:
+        ret, img = cap.read()
+        
+        if ret == False:
+            print('Camera is not on')
+            break
+        else:
+            gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+            faces = face_classifier.detectMultiScale(gray,1.3,5)
+        #Scaling factor 1.3
+        # Minimum naber 5
+            for (x,y,w,h) in faces:
+                cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
+                cropped_image = img[y:y+h, x:x+w] 
+                IMG_SIZE=450
+                color_img = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY)
+
+                #cnnModel(color_img)
+
+                predictions = lbph_face_classifier.predict(color_img)
+                #print(predictions)
+                #value=int(predictions[0])
+                #name= class_names[predictions[0]]
+                cv2.putText(img, str(class_names[predictions[0]]), (x+5,y-5), font, 1, (255,0,255), 2)
+                cv2.putText(img, str(round(predictions[1],2))+"%", (x+5,y+h-5), font, 1, (255,255,0), 1)
+                sid=predictions[0]
+                #print()
+                if class_names[predictions[0]] in class_names.values():
+                    val=str(class_names[predictions[0]])
+                    print(val)
+        
+                    #f.loc[value-1, 'Name'] = name
+                    #f.loc[value-1, 'Attendance'] = "Present"
+                    print("yes")
+                
+                    #f.to_csv('attendance.csv', index=False)
+            cv2.imshow('video',img) 
+            k = cv2.waitKey(30) & 0xff
+            if k == 27: # press 'ESC' to quit
+                break
+            
+                # If image taken reach 100, stop taking video
+    cap.release()
+    cv2.destroyAllWindows()
+    return render_template('home.html')
+                    
+            #cv2.imshow('video',img)
+            #return render_template('home.html')
+                    #current_time = now.strftime("%H-%M-%S")
+                #lnwriter.writerow([val,current_time])
+
+
+UPLOAD_FOLDER = 'upload'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+
+
+@app.route('/upload',methods=['GET','POST'])
+def upload():
+    class_names = {1:"Shreya",2:"Shreyatwo", 3:"Muskan",4:"Kumkum", 1903064:"shreya3"}#,2:"Muskan",3:"Balaji",4:"Tejashree"} #name of people
+    now = datetime.now()
+    current_date = now.strftime("%Y-%m-%d")
+    current_time = now.strftime("%H:%M:%S")
+    print(current_date)
+    # load the model from disk
+    filename = "model1.yml"
+    
+    f = pd.read_csv('attendance.csv')
+    # Initialize LPBH model object and load the model
+    lbph_face_classifier = cv2.face.LBPHFaceRecognizer_create()
+    lbph_face_classifier.read(filename)
+    cap=cv2.VideoCapture(0)
+    cap.set(3,640) # set Width
+    cap.set(4,480) # set Height'''
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    face_classifier = cv2.CascadeClassifier(cv2.data.haarcascades +"haarcascade_frontalface_default.xml")
+    sub_name="SM"
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    
+    # Read the image
+    cap = cv2.imread(f"Testing Images/{filename}")
+
+    # Convert it to GrayScale Image
+    gray = cv2.cvtColor(cap,cv2.COLOR_BGR2GRAY)
+
+    # Using HaarCascasde detect multiple faces
+    faces = face_classifier.detectMultiScale(gray,1.3,5) #Scaling factor = 1.3 , minNeighbors = 5
+    
+    for (x,y,w,h) in faces:
+        cv2.rectangle(cap,(x,y),(x+w,y+h),(255,0,0),2)
+        cropped_image = cap[y:y+h, x:x+w] 
+        color_img = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY)
+    
+        # Using LPBH model recognise the detected faces
+        predictions = lbph_face_classifier.predict(color_img)
+        print(predictions)
+        value=int(predictions[0])
+        name= class_names[predictions[0]]
+        cv2.putText(cap, class_names[predictions[0]], (x+5,y-5), font, 1, (255,0,255), 2)
+        cv2.putText(cap, str(round(predictions[1],2))+"%", (x+5,y+h-5), font, 1, (255,255,0), 1)
+        if class_names[predictions[0]] in class_names.values():
+                val=str(class_names[predictions[0]])
+                print(val)
+                print("yes")
+                #current_time = now.strftime("%H-%M-%S")
+                #lnwriter.writerow([val,current_date])
+
+    # Shows the result and save it as per name given in Results folder 
+    cv2.imshow('Recognised Faces',cap)
+
+    
+    parent= "Results"
+    directory = "LPBH_model_results"
+    path=os.path.join(parent,directory)
+    os.makedirs(path,exist_ok=True)
+    file_name = input('Enter name to save the result:')
+    file_name_path=f"Results/{directory}/{file_name}.jpg"
+    cv2.imwrite(f'{file_name_path}',cap)
+
+    # Destroy all windows and return to menu
+    # cap.release()
+    cv2.destroyAllWindows()
+    return render_template('home.html')
+                    
+            #cv2.imshow('video',img)
+            #return render_template('home.html')
+                    #current_time = now.strftime("%H-%M-%S")
+                #lnwriter.writerow([val,current_time])
+            
+
+    
 
 @app.route('/mark_your_attendance',methods=['GET','POST'])
 def mark_your_attendance():

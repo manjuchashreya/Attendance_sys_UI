@@ -46,11 +46,11 @@
       <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
         <div class="btn-group mr-2" role="group" aria-label="First group">
           <div class="btn-group-lg" role="group" aria-label="Third group">
-            <button type="button" class="btn btn-outline-danger">Live</button>
+            <a href="/live" type="button" class="btn btn-outline-danger">Live</a>
           </div>
         </div>
         <div class="btn-group" role="group" aria-label="Third group">
-          <button type="button" class="btn btn-outline-success">Static</button>
+          <a href="/upload" type="button" class="btn btn-outline-success">Static</a>
           <form action="{{ url_for('mark_attendance_details') }}" method="post">
             <input type="file" id="myFile" name="filename">
             <input type="submit">
