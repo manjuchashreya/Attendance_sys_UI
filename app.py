@@ -15,6 +15,9 @@ import csv
 import pandas as pd
 from werkzeug.utils import secure_filename
 
+UPLOAD_FOLDER = './upload_Img'
+# UPLOAD_FOLDER = 'C:\\Muskan_Academic_Projects\\sem7 Mini Project\\Majort BE project\\Project 2\\UI\\UI\\Attendance_sys_UI\\upload_Img'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 with open('password.txt') as f:
     db_password = f.read()
@@ -273,7 +276,7 @@ def teacher_dashboard():
 
 @app.route('/live',methods=['GET','POST'])
 def live():
-    class_names = {1:"Shreya",2:"Shreyatwo", 3:"Muskan",4:"Kumkum", 1903064:"shreya3"}#,2:"Muskan",3:"Balaji",4:"Tejashree"} #name of people
+    class_names = {1:"Shreya",2:"Shreyatwo", 3:"Muskan",4:"Kumkum", 1903064:"shreya3" , 1903032: "Muskan Gupta"}#,2:"Muskan",3:"Balaji",4:"Tejashree"} #name of people
     now = datetime.now()
     current_date = now.strftime("%Y-%m-%d")
     current_time = now.strftime("%H:%M:%S")
@@ -343,8 +346,7 @@ def live():
                 #lnwriter.writerow([val,current_time])
 
 
-UPLOAD_FOLDER = 'upload'
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+
 
 
 @app.route('/upload',methods=['GET','POST'])
@@ -369,63 +371,69 @@ def upload():
     sub_name="SM"
     if request.method == 'POST':
         # check if the post request has the file part
-        if 'file' not in request.files:
+        if 'studentImg' not in request.files:
             flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
+            print('No file part')
+            return redirect(url_for('mark_attendance_details'))
+        Uploaded_file = request.files['studentImg']
         # if user does not select file, browser also
         # submit a empty part without filename
-        if file.filename == '':
+        if Uploaded_file.filename == '':
             flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            print('No selected file')
+            return redirect(url_for('mark_attendance_details'))
+        if Uploaded_file and allowed_file(Uploaded_file.filename):
+            filename1 = secure_filename(Uploaded_file.filename)
+            Uploaded_file.save(os.path.join('./upload_Img', secure_filename(Uploaded_file.filename)))
+            # path = os.path.join(, filename1.filename)
+            # Uploaded_file.save(path)
+            # Uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            print('Image Uploaded successfully!!')
     
-    # Read the image
-    cap = cv2.imread(f"Testing Images/{filename}")
+            # Read the image
+            cap = cv2.imread(f"upload_Img/{filename}")
 
-    # Convert it to GrayScale Image
-    gray = cv2.cvtColor(cap,cv2.COLOR_BGR2GRAY)
+            # Convert it to GrayScale Image
+            gray = cv2.cvtColor(cap,cv2.COLOR_BGR2GRAY)
 
-    # Using HaarCascasde detect multiple faces
-    faces = face_classifier.detectMultiScale(gray,1.3,5) #Scaling factor = 1.3 , minNeighbors = 5
-    
-    for (x,y,w,h) in faces:
-        cv2.rectangle(cap,(x,y),(x+w,y+h),(255,0,0),2)
-        cropped_image = cap[y:y+h, x:x+w] 
-        color_img = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY)
-    
-        # Using LPBH model recognise the detected faces
-        predictions = lbph_face_classifier.predict(color_img)
-        print(predictions)
-        value=int(predictions[0])
-        name= class_names[predictions[0]]
-        cv2.putText(cap, class_names[predictions[0]], (x+5,y-5), font, 1, (255,0,255), 2)
-        cv2.putText(cap, str(round(predictions[1],2))+"%", (x+5,y+h-5), font, 1, (255,255,0), 1)
-        if class_names[predictions[0]] in class_names.values():
-                val=str(class_names[predictions[0]])
-                print(val)
-                print("yes")
-                #current_time = now.strftime("%H-%M-%S")
-                #lnwriter.writerow([val,current_date])
+            # Using HaarCascasde detect multiple faces
+            faces = face_classifier.detectMultiScale(gray,1.3,5) #Scaling factor = 1.3 , minNeighbors = 5
+            
+            for (x,y,w,h) in faces:
+                cv2.rectangle(cap,(x,y),(x+w,y+h),(255,0,0),2)
+                cropped_image = cap[y:y+h, x:x+w] 
+                color_img = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY)
+            
+                # Using LPBH model recognise the detected faces
+                predictions = lbph_face_classifier.predict(color_img)
+                print(predictions)
+                value=int(predictions[0])
+                name= class_names[predictions[0]]
+                cv2.putText(cap, class_names[predictions[0]], (x+5,y-5), font, 1, (255,0,255), 2)
+                cv2.putText(cap, str(round(predictions[1],2))+"%", (x+5,y+h-5), font, 1, (255,255,0), 1)
+                if class_names[predictions[0]] in class_names.values():
+                        val=str(class_names[predictions[0]])
+                        print(val)
+                        print("yes")
+                        #current_time = now.strftime("%H-%M-%S")
+                        #lnwriter.writerow([val,current_date])
 
-    # Shows the result and save it as per name given in Results folder 
-    cv2.imshow('Recognised Faces',cap)
+            # Shows the result and save it as per name given in Results folder 
+            cv2.imshow('Recognised Faces',cap)
 
-    
-    parent= "Results"
-    directory = "LPBH_model_results"
-    path=os.path.join(parent,directory)
-    os.makedirs(path,exist_ok=True)
-    file_name = input('Enter name to save the result:')
-    file_name_path=f"Results/{directory}/{file_name}.jpg"
-    cv2.imwrite(f'{file_name_path}',cap)
+            
+            parent= "Results"
+            directory = "LPBH_model_results"
+            path=os.path.join(parent,directory)
+            os.makedirs(path,exist_ok=True)
+            file_name = input('Enter name to save the result:')
+            file_name_path=f"Results/{directory}/{file_name}.jpg"
+            cv2.imwrite(f'{file_name_path}',cap)
 
-    # Destroy all windows and return to menu
-    # cap.release()
-    cv2.destroyAllWindows()
-    return render_template('home.html')
+            # Destroy all windows and return to menu
+            # cap.release()
+            cv2.destroyAllWindows()
+            return render_template('home.html')
                     
             #cv2.imshow('video',img)
             #return render_template('home.html')

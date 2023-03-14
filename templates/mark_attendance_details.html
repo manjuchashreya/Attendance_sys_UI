@@ -13,6 +13,23 @@
 
   <div class="login_form_box">
     <h4 class="text-center mb-4">Details of Attendance</h4>
+
+    <div class="dropdown mb-2">
+      <button class="btn btn-outline-success btn-lg btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Static
+      </button>
+
+      <form action="/upload" method="post" enctype="multipart/form-data">
+        <div class="dropdown-menu btn-block" aria-labelledby="dropdownMenuButton">
+          <div class="form-group dropdown-item btn-block">
+            <label for="studentImg">Upload Student Image</label>
+            <input type="file" class="form-control-file" id="studentImg" name="studentImg">
+            <button type="submit" class="mt-2 btn btn-outline-danger">Upload</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
     <form action="{{ url_for('login') }}" method="post">
       <div class="msg">{{ msg }}</div>
 
@@ -26,18 +43,7 @@
 
 
         <a href="/live" type="button" class="mt-2 btn btn-outline-danger btn-lg btn-block">Live</a>
-        <div class="dropdown mt-2">
-          <button class="btn btn-outline-success btn-lg btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Static
-          </button>
-          <div class="dropdown-menu btn-block" aria-labelledby="dropdownMenuButton">
-            <div class="form-group dropdown-item btn-block">
-              <label for="studentImg">Upload Student Image</label>
-              <input type="file" class="form-control-file" id="studentImg" name="studentImg">
-              <a href="/upload" type="button" class="mt-2 btn btn-outline-danger">Upload</a>
-            </div>
-          </div>
-        </div>
+        
         <div class="d-flex justify-content-center mt-2">
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>
