@@ -468,9 +468,11 @@ def fetch_Attendance():
         print(sd2,ed2)
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute(f'SELECT * FROM attendance WHERE subject_name = "{UID}" OR subject_name = "{Blockchain}" OR subject_name = "{SM}" OR subject_name = "{BDA}" AND date BETWEEN "{sd2}" AND "{ed2}"')
-        attendance = cursor.fetchall()
-        print(attendance)
-        return redirect(url_for('teacher_dashboard'))
+        attendanceFetch = cursor.fetchall()
+        print(attendanceFetch)
+        return render_template('teacher_dashboard.html',attendanceFetch = attendanceFetch)
+    return render_template('teacher_dashboard.html')
+    
     
 
 @app.route('/mark_your_attendance',methods=['GET','POST'])

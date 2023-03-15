@@ -3,17 +3,32 @@
 
 
 /* MAin Section */
-.main{
+.Theading {
+  display: flex;
+  color: black;
+  margin-top: 29px;
+  justify-content: center;
+}
+
+.Theading h2 {
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.main {
   position: relative;
-  padding: 20px;
+  padding: 10px 20px;
   width: 100%;
 }
 
-.main .users{
+.main .users {
   display: flex;
   width: 100%;
+  justify-content: center;
 }
-.users .card{
+
+.users .card {
   width: 55%;
   margin: 10px;
   background: #fff;
@@ -23,12 +38,12 @@
   box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
 }
 
-.users .card h4{
+.users .card h4 {
   text-transform: uppercase;
 }
 
 
-.users .card button{
+.users .card button {
   width: 100%;
   margin-top: 8px;
   padding: 7px;
@@ -37,18 +52,20 @@
   background: transparent;
   border: 1px solid #4AD489;
 }
-.users .card button:hover{
+
+.users .card button:hover {
   background: #4AD489;
   color: #fff;
   transition: 0.5s;
 }
 
 /*Attendance List serction  */
-.attendance{
+.attendance {
   margin-top: 20px;
   text-transform: capitalize;
 }
-.attendance-list{
+
+.attendance-list {
   width: 100%;
   padding: 10px;
   margin-top: 10px;
@@ -56,7 +73,24 @@
   border-radius: 10px;
   box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
 }
-.table{
+
+.download_box{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.download_box a{
+  text-decoration: none;
+  color: #34af6d;
+}
+
+.fa{
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.table {
   border-collapse: collapse;
   margin: 25px 0;
   font-size: 15px;
@@ -64,37 +98,45 @@
   overflow: hidden;
   border-radius: 5px 5px 0 0;
 }
-table thead tr{
+
+table thead tr {
   color: #fff;
   background: #34AF6D;
   text-align: left;
   font-weight: bold;
 }
+
 .table th,
-.table td{
+.table td {
   padding: 12px 15px;
 }
-.table tbody tr{
+
+.table tbody tr {
   border-bottom: 1px solid #ddd;
 }
-.table tbody tr:nth-of-type(odd){
+
+.table tbody tr:nth-of-type(odd) {
   background: #f3f3f3;
 }
-.table tbody tr.active{
+
+.table tbody tr.active {
   font-weight: bold;
   color: #4AD489;
 }
-.table tbody tr:last-of-type{
+
+.table tbody tr:last-of-type {
   border-bottom: 2px solid #4AD489;
 }
-.table button{
+
+.table button {
   padding: 6px 20px;
   border-radius: 10px;
   cursor: pointer;
   background: transparent;
   border: 1px solid #4AD489;
 }
-.table button:hover{
+
+.table button:hover {
   background: #4AD489;
   color: #fff;
   transition: 0.5rem;
@@ -103,36 +145,36 @@ table thead tr{
 
 
 .cards {
-    width: 100%;
-    padding: 20px 20px;
-    display: grid;
-    grid-template-columns: repeat(2, 2fr);
-    grid-gap: 20px;
+  width: 100%;
+  padding: 20px 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 2fr);
+  grid-gap: 20px;
 }
 
 .cards .card {
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
 }
 
 
 .number {
-    font-size: 35px;
-    font-weight: 500;
-    color: #299B63;
+  font-size: 35px;
+  font-weight: 500;
+  color: #299B63;
 }
 
 .card-name {
-    color: #888;
-    font-weight: 600;
+  color: #888;
+  font-weight: 600;
 }
 
 .icon-box i {
-    font-size: 45px;
-    color: #299b63;
+  font-size: 45px;
+  color: #299b63;
 }
