@@ -21,6 +21,7 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <script src="https://kit.fontawesome.com/fb5d9aac26.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -36,9 +37,12 @@
 
     <section class="main">
 
+      <div class="Theading">
+        <h2>Attendance Records</h2>
+      </div>
+
       <form action="/fetch_Attendance" method="post">
       <div class="main">
-
 
           <div class="cards">
             <div class="card">
@@ -78,19 +82,15 @@
             <div class="card">
               <div class="card-content">
 
-
                 <div class="form-group">
                   <label>Enter Start Date</label>
                   <div class='input-group date' id='datetimepicker6'>
-
                     <input type='text' class="form-control" name="start"/>
-
                     <span class="input-group-addon">
                       <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                   </div>
                 </div>
-
 
                 <div class="form-group">
                   <label>Enter End Date</label>
@@ -109,37 +109,23 @@
           </div>
       </div>
 
-
-
       <div class="users">
         <div class="card">
-
           <h4>Today's Statistics</h4>
-
           <div class="per">
-
           </div>
           <button type="submit">Refresh</button>
           <a href="/excel" type="button">Download Excel</a>
         </div>
-
-        <!-- <div class="card">
-
-          <h4>Today's Statistics</h4>
-
-          <div class="per">
-
-          </div>
-          <button>Refresh</button>
-        </div> -->
-
       </div>
-
     </form>
 
       <section class="attendance">
         <div class="attendance-list">
-          <h1>Attendance List</h1>
+          <div class="download_box">
+            <h1>Attendance List</h1>
+            <a href="/excel"><i class="fa fa-download"></i></a>
+          </div>
           <table class="table">
             <thead>
               <tr>
@@ -152,54 +138,15 @@
               </tr>
             </thead>
             <tbody>
+              {% for attF in attendanceFetch %}
               <tr>
-                <td>01</td>
-                <td>Sam David</td>
-                <td>Design</td>
-                <td>03-24-22</td>
-                <td>8:00AM</td>
-
+                <td><strong>{{ loop.index }}</strong></td>
+                <td>{{ attF.student_fname }}</td>
+                <td>{{ attF.subject_name }}</td>
+                <td>{{ attF.date }}</td>
+                <td>{{ attF.time }}</td>
               </tr>
-              <tr class="active">
-                <td>02</td>
-                <td>Balbina Kherr</td>
-                <td>Coding</td>
-                <td>03-24-22</td>
-                <td>9:00AM</td>
-
-              </tr>
-              <tr>
-                <td>03</td>
-                <td>Badan John</td>
-                <td>testing</td>
-                <td>03-24-22</td>
-                <td>8:00AM</td>
-              </tr>
-              <tr>
-                <td>04</td>
-                <td>Sara David</td>
-                <td>Design</td>
-                <td>03-24-22</td>
-                <td>8:00AM</td>
-              </tr>
-              <!-- <tr >
-                <td>05</td>
-                <td>Salina</td>
-                <td>Coding</td>
-                <td>03-24-22</td>
-                <td>9:00AM</td>
-                <td>4:00PM</td>
-                <td><button>View</button></td>
-              </tr>
-              <tr >
-                <td>06</td>
-                <td>Tara Smith</td>
-                <td>Testing</td>
-                <td>03-24-22</td>
-                <td>9:00AM</td>
-                <td>4:00PM</td>
-                <td><button>View</button></td>
-              </tr> -->
+              {% endfor %}
             </tbody>
           </table>
         </div>
