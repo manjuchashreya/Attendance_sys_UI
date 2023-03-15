@@ -136,8 +136,11 @@
 
               </tr>
             </thead>
+            {% if alltodo|length == 0 %}
+            <h4 style="text-align: center;">Please select subject, date and time to downlaod Attendance</h4>
+            {% else %}
             <tbody>
-              {% for attF in attendanceFetch %}
+            {% for attF in attendanceFetch %}
               <tr>
                 <td><strong>{{ loop.index }}</strong></td>
                 <td>{{ attF.student_fname }}</td>
@@ -147,6 +150,7 @@
               </tr>
               {% endfor %}
             </tbody>
+            {% endif %}
           </table>
         </div>
       </section>
