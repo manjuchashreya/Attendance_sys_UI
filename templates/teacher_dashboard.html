@@ -85,7 +85,7 @@
                 <div class="form-group">
                   <label>Enter Start Date</label>
                   <div class='input-group date' id='datetimepicker6'>
-                    <input type='text' class="form-control" name="start"/>
+                    <input type='text' class="form-control" name="start" required/>
                     <span class="input-group-addon">
                       <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -95,7 +95,7 @@
                 <div class="form-group">
                   <label>Enter End Date</label>
                   <div class='input-group date' id='datetimepicker7'>
-                    <input type='text' class="form-control" name="end"/>
+                    <input type='text' class="form-control" name="end" required/>
                     <span class="input-group-addon">
                       <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -115,6 +115,13 @@
           <div class="per">
           </div>
           <button type="submit">Refresh</button>
+          <script>
+            if ( '{{ csv_filename }}' != '')
+            {
+              var csv_name = '{{ csv_filename }}'
+              localStorage.setItem('filename', csv_name )
+            }
+          </script>
         </div>
       </div>
     </form>
@@ -124,8 +131,18 @@
           <div class="download_box">
             <h1>Attendance List</h1>
             <form action="/excel" method="post">
+              <input type="hidden" name="csv_filename" id="csv_filename">
               <input type="hidden" name="UI_attend" value="{{ attendanceFetch }}">
-              <button type="submit"><i class="fa fa-download"></i></button></form>
+              <button onclick="submitForm()" type="submit"><i class="fa fa-download"></i></button></form>
+              <script>
+              function submitForm()
+              {
+                  let csv_name1 = localStorage.getItem('filename');
+            
+                  // set the value of the hidden input
+                  document.getElementById("csv_filename").value = csv_name1;
+              }
+              </script>
           </div>
           <table class="table">
             <thead>

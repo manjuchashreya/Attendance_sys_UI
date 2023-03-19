@@ -473,7 +473,16 @@ def fetch_Attendance():
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute(f'SELECT * FROM attendance WHERE subject_name = "{UID}" OR subject_name = "{Blockchain}" OR subject_name = "{SM}" OR subject_name = "{BDA}" AND date BETWEEN "{sd2}" AND "{ed2}"')
         attendanceFetch = cursor.fetchall()
-        return render_template('teacher_dashboard.html',attendanceFetch = attendanceFetch)
+        csv_filename =  f'{sd2}TO{ed2}'
+        if SM != None:
+            csv_filename = csv_filename + f'_{SM}'
+        if Blockchain != None:
+            csv_filename = csv_filename + f'_{Blockchain}'
+        if BDA != None:
+            csv_filename = csv_filename + f'_{BDA}'
+        if UID != None:
+            csv_filename = csv_filename + f'_{UID}'
+        return render_template('teacher_dashboard.html',attendanceFetch = attendanceFetch, csv_filename = csv_filename)
     return render_template('teacher_dashboard.html')
 
   
@@ -481,22 +490,12 @@ def fetch_Attendance():
 def excel():
     # a=[{'attendance_id': 1, 'date': '2023-03-15', 'time': '00:59:55', 'student_id': 1903032, 'student_fname': 'Muskan Gupta', 'subject_name': 'SM', 'attendance': 'Present'}]
     if request.method == 'POST':
-        # atf = {}
+        file_name = request.form['csv_filename']
+        print(f'Name: {file_name}')
         attendance_fetch = request.form['UI_attend']
-        print(attendance_fetch, type(attendance_fetch))
-        #atf = str(attendance_fetch).strip('()')
-        #print("1",atf, type(atf))
-        #attendancefetch = dict(atf)
-        #print(attendance_fetch, type(attendance_fetch))
-        #a = dict(attendance_fetch)
-        #print(a, type(a) , "hello")
         res=ast.literal_eval(attendance_fetch)
-        print(ast.literal_eval(attendance_fetch),type(res))
-        # print(attendance_fetch['attendance_id'])
-        file_name = str(current_date)+".csv"
-        # print(SEND_VARIABLE)
         field_names=['attendance_id','date','time','student_id','student_fname','subject_name', 'attendance']
-        with open(file_name,'w') as csvfile:
+        with open(f'{file_name}.csv','w') as csvfile:
            writer  = csv.DictWriter(csvfile, fieldnames=field_names)
            writer.writeheader()
            writer.writerows(res)
