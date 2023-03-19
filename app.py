@@ -19,7 +19,7 @@ from werkzeug.utils import secure_filename
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 SEND_VARIABLE = {}
 
-class_names = {1:"Shreya",2:"Shreyatwo", 3:"Muskan",4:"Kumkum", 1903064:"shreya3" , 1903032: "Muskan Gupta"}#,2:"Muskan",3:"Balaji",4:"Tejashree"} #name of people
+class_names = {1903064:"Shreya Manjucha" , 1903032: "Muskan Gupta", 1903091:"Rishabh Raghuvanshi", 1903123:"Unnati Sarothi",1903129:"Tejashree Tambe", 1903139:"Balaji Wadawadagi"}#,2:"Muskan",3:"Balaji",4:"Tejashree"} #name of people
 
 now = datetime.now()
 current_date = now.strftime("%Y-%m-%d")
@@ -281,7 +281,7 @@ def teacher_dashboard():
 
 @app.route('/live',methods=['GET','POST'])
 def live():
-    class_names = {1:"Shreya",2:"Shreyatwo", 3:"Muskan",4:"Kumkum", 1903064:"shreya3" , 1903032: "Muskan Gupta"}#,2:"Muskan",3:"Balaji",4:"Tejashree"} #name of people
+    #class_names = {1:"Shreya",2:"Shreyatwo", 3:"Muskan",4:"Kumkum", 1903064:"shreya3" , 1903032: "Muskan Gupta"}#,2:"Muskan",3:"Balaji",4:"Tejashree"} #name of people
     now = datetime.now()
     current_date = now.strftime("%Y-%m-%d")
     current_time = now.strftime("%H:%M:%S")
@@ -474,13 +474,20 @@ def fetch_Attendance():
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute(f'SELECT * FROM attendance WHERE subject_name = "{UID}" OR subject_name = "{Blockchain}" OR subject_name = "{SM}" OR subject_name = "{BDA}" AND date BETWEEN "{sd2}" AND "{ed2}"')
         attendanceFetch = cursor.fetchall()
-        SEND_VARIABLE=attendanceFetch
-        print(SEND_VARIABLE)
+        #print(attendanceFetch["data"])
+        file_name = str(current_date)+".csv"
+        print("HELLO")
+        field_names=['attendance_id','date','time','student_id','student_fname','subject_name', 'attendance']
+        with open(file_name,'w') as csvfile:
+            writer  = csv.DictWriter(csvfile, fieldnames=field_names)
+            writer.writeheader()
+            writer.writerows(attendanceFetch)
         return render_template('teacher_dashboard.html',attendanceFetch = attendanceFetch)
     return render_template('teacher_dashboard.html')
-    
+
+  
 @app.route('/excel',methods=['GET','POST'])
-def excel():
+def excel(attendanceFetch):
     a=[{'attendance_id': 1, 'date': '2023-03-15', 'time': '00:59:55', 'student_id': 1903032, 'student_fname': 'Muskan Gupta', 'subject_name': 'SM', 'attendance': 'Present'}]
     file_name = str(current_date)+".csv"
     print(SEND_VARIABLE)
@@ -489,7 +496,7 @@ def excel():
     with open(file_name,'w') as csvfile:
         writer  = csv.DictWriter(csvfile, fieldnames=field_names)
         writer.writeheader()
-        writer.writerows(SEND_VARIABLE)
+        writer.writerows(a)
 
     return redirect(url_for('teacher_dashboard'))
 
