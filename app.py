@@ -78,8 +78,6 @@ def login():
                 session['loggedin'] = True
                 session['tid'] = account['tid']
                 session['tname'] = account['tname']
-                msg = 'Logged in successfully !'
-                flash(msg)
                 return redirect(url_for('admin_dashboard'))
             else:
                 msg = 'Incorrect Email or password !'
