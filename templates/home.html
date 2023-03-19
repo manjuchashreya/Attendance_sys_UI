@@ -6,9 +6,20 @@
         <h1>Attendance System Using Face Recognition</h1>
     </div>
     <div class="row">
+        {% if 'loggedin' in session %}
         <div class="col-md-4">
             <a href='/mark_attendance_details'><img src="../static/img/enter.png" class="img-responsive" /></a>
         </div>
+        {% else %}
+        <div class="col-md-4">
+            <a href='#' onclick="alertBox()"><img src="../static/img/enter.png" class="img-responsive" /></a>
+            <script>
+                function alertBox() {
+                  alert("Please Log In to Continue!!");
+                }
+            </script>
+        </div>
+        {% endif %}
 
         {% if 'loggedin' in session %}
         <div class="col-md-4">
