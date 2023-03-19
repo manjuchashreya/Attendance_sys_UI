@@ -115,7 +115,6 @@
           <div class="per">
           </div>
           <button type="submit">Refresh</button>
-          <a href="/excel" type="button">Download Excel</a>
         </div>
       </div>
     </form>
@@ -124,7 +123,9 @@
         <div class="attendance-list">
           <div class="download_box">
             <h1>Attendance List</h1>
-            <a href="/excel"><i class="fa fa-download"></i></a>
+            <form action="/excel" method="post">
+              <input type="hidden" name="UI_attend" value="{{ attendanceFetch }}">
+              <button type="submit"><i class="fa fa-download"></i></button></form>
           </div>
           <table class="table">
             <thead>
@@ -137,7 +138,7 @@
 
               </tr>
             </thead>
-            {% if alltodo|length == 0 %}
+            {% if attendanceFetch|length == 0 %}
             <h4 style="text-align: center;">Please select subject, date and time to downlaod Attendance</h4>
             {% else %}
             <tbody>

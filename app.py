@@ -14,6 +14,7 @@ from datetime import datetime
 import csv
 import pandas as pd
 from werkzeug.utils import secure_filename
+import json
 
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -351,9 +352,6 @@ def live():
                 #lnwriter.writerow([val,current_time])
 
 
-
-
-
 @app.route('/upload',methods=['GET','POST'])
 def upload():
     # class_names = {1:"Shreya",2:"Shreyatwo", 3:"Muskan",4:"Kumkum", 1903064:"shreya3"}#,2:"Muskan",3:"Balaji",4:"Tejashree"} #name of people
@@ -470,26 +468,38 @@ def fetch_Attendance():
         ed = endDate.split(" ")
         ed1 = ed[0].split('/')
         ed2 = f'{ed1[2]}-{ed1[0]}-{ed1[1]}'
-        print(sd2,ed2)
+        # print(sd2,ed2)
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute(f'SELECT * FROM attendance WHERE subject_name = "{UID}" OR subject_name = "{Blockchain}" OR subject_name = "{SM}" OR subject_name = "{BDA}" AND date BETWEEN "{sd2}" AND "{ed2}"')
         attendanceFetch = cursor.fetchall()
-        SEND_VARIABLE=attendanceFetch
-        print(SEND_VARIABLE)
         return render_template('teacher_dashboard.html',attendanceFetch = attendanceFetch)
     return render_template('teacher_dashboard.html')
     
 @app.route('/excel',methods=['GET','POST'])
 def excel():
-    a=[{'attendance_id': 1, 'date': '2023-03-15', 'time': '00:59:55', 'student_id': 1903032, 'student_fname': 'Muskan Gupta', 'subject_name': 'SM', 'attendance': 'Present'}]
-    file_name = str(current_date)+".csv"
-    print(SEND_VARIABLE)
-    print("HELLO")
-    field_names=['attendance_id','date','time','student_id','student_fname','subject_name', 'attendance']
-    with open(file_name,'w') as csvfile:
-        writer  = csv.DictWriter(csvfile, fieldnames=field_names)
-        writer.writeheader()
-        writer.writerows(SEND_VARIABLE)
+    # a=[{'attendance_id': 1, 'date': '2023-03-15', 'time': '00:59:55', 'student_id': 1903032, 'student_fname': 'Muskan Gupta', 'subject_name': 'SM', 'attendance': 'Present'}]
+    if request.method == 'POST':
+        # atf = {}
+        attendance_fetch = request.form['UI_attend']
+        # # print(attendance_fetch, type(attendance_fetch))
+        # atf = str(attendance_fetch).strip('()')
+        # print(atf, type(atf))
+        # attend_fetch = dict(atf)
+        # print(attendance_fetch, type(attendance_fetch))
+        a = tuple(attendance_fetch)
+        print(a, type(a) , "hello")
+        # print(json.loads(attendance_fetch),type(attendance_fetch))
+        # print(attendance_fetch['attendance_id'])
+        file_name = str(current_date)+".csv"
+        # print(SEND_VARIABLE)
+        field_names=['attendance_id','date','time','student_id','student_fname','subject_name', 'attendance']
+        with open(file_name,'w') as csvfile:
+            writer  = csv.DictWriter(csvfile, fieldnames=field_names)
+            writer.writeheader()
+            writer.writerows(a)
+
+        print("Excel sheet downloaded successfully!!")
+        return redirect(url_for('teacher_dashboard'))
 
     return redirect(url_for('teacher_dashboard'))
 
