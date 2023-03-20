@@ -90,7 +90,7 @@ def login():
             if account:
                 session['loggedin'] = True
                 session['student_id'] = account['student_id']
-                session['name'] = account['fname']
+                session['fname'] = account['fname']
                 return redirect(url_for('home'))
             else:
                 msg = 'Incorrect Email or password !'
