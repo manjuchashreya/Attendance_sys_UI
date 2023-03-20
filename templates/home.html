@@ -6,9 +6,20 @@
         <h1>Attendance System Using Face Recognition</h1>
     </div>
     <div class="row">
+        {% if 'loggedin' in session %}
         <div class="col-md-4">
             <a href='/mark_attendance_details'><img src="../static/img/enter.png" class="img-responsive" /></a>
         </div>
+        {% else %}
+        <div class="col-md-4">
+            <a href='#' onclick="alertBox()"><img src="../static/img/enter.png" class="img-responsive" /></a>
+            <script>
+                function alertBox() {
+                  alert("Please Log In to Continue!!");
+                }
+            </script>
+        </div>
+        {% endif %}
 
         {% if 'loggedin' in session %}
         <div class="col-md-4">
@@ -17,7 +28,7 @@
         {% else %}
 
         <div class="col-md-4">
-            <a href='/mark-your-attendance-out'><img src="../static/img/exit.png" class="img-responsive" /></a>
+            <a href='#'><img src="../static/img/IT Logo.png" class="img-responsive" /></a>
         </div>
 
         {% endif %}
@@ -45,7 +56,8 @@
         </div>
         {% else %}
         <div class="col md-3">
-            <h4 class="text-center">Mark Your Attendance - Out </h4>
+            <h4 class="text-center">Defaulters Defaulters</h4>
+            <h4 class="text-center">Complete Your 75% Attendance</h4>
         </div>
         {% endif %}
 

@@ -41,6 +41,23 @@ h1.student{
     box-shadow:         2px 2px 15px 0px rgba(0, 3, 0, 0.7);
 }
 
+.col-lg-13{
+    background: rgba(0,0,0,0.6);
+    margin-top:5em;
+    margin-bottom:3em;
+    padding-top:1em;
+    padding-bottom:3em;
+    color:#fff;
+    border-radius:10px;
+    -webkit-box-shadow: 2px 2px 15px 0px rgba(0, 3, 0, 0.7);
+    -moz-box-shadow:    2px 2px 15px 0px rgba(0, 3, 0, 0.7);
+    box-shadow:         2px 2px 15px 0px rgba(0, 3, 0, 0.7);
+}
+
+.box{
+    margin-top: 5rem;
+}
+
 .col-md-4{
     padding-left: 160px;
     align-items: center;
@@ -87,10 +104,10 @@ margin-left:auto; margin-right: auto;
 
 .login_form{
     display: flex;
-    min-height: 500px;
+    /* min-height: 500px; */
     align-items: center;
     justify-content: center;
-    margin-top: 80px;
+    margin: 146px 0px;
 }
 
 .message-box{
@@ -167,12 +184,13 @@ h4.lgn{
 .nav-buttons{
     background-color: white;
     display: flex;
-    padding: 5px 60px 0px 5px;
+    padding: 5px 0px;
     font-size: 20px;
     justify-content: flex-start;
     font-family: 'Circular-Loom';
     font-weight: 450;
     position: fixed;
+    top: 74px;
     z-index: 10;
     width: 100%;
 }

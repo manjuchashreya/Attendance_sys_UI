@@ -78,7 +78,7 @@ def login():
             if account:
                 session['loggedin'] = True
                 session['tid'] = account['tid']
-                session['tname'] = account['tname']
+                session['name'] = account['tname']
                 return redirect(url_for('admin_dashboard'))
             else:
                 msg = 'Incorrect Email or password !'
@@ -90,8 +90,8 @@ def login():
             if account:
                 session['loggedin'] = True
                 session['student_id'] = account['student_id']
-                session['fname'] = account['fname']
-                return redirect(url_for('student_home'))
+                session['name'] = account['fname']
+                return redirect(url_for('home'))
             else:
                 msg = 'Incorrect Email or password !'
                 flash(msg)
@@ -130,7 +130,10 @@ def register():
     
 @app.route('/admin_dashboard',methods=['GET','POST'])
 def admin_dashboard():
-    return render_template('admin_dashboard.html')
+    if 'loggedin' in session:
+        return render_template('admin_dashboard.html')
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/student_home',methods=['GET','POST'])
 def student_home():
@@ -174,64 +177,72 @@ def register_student():
 
 @app.route('/add_photos',methods=['GET','POST'])
 def add_photos():
-    msg=''
-    if request.method == 'POST' and 'name' in request.form and 'sid' in request.form:
-        fname = request.form['name']
-        face_id=request.form['sid']
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM students WHERE fname = % s', (fname, ))
-        account = cursor.fetchone()
-        if account:
-            session['fname'] = account['fname']
-            vid_cam = cv2.VideoCapture(0)
-            face_detector = cv2.CascadeClassifier(cv2.data.haarcascades +'haarcascade_frontalface_default.xml')
-            count = 0
-            assure_path_exists("data/1")
-            while (True):
-                # Capture video frame
-                _, image_frame = vid_cam.read()
+    if 'loggedin' in session:
+        msg=''
+        if request.method == 'POST' and 'name' in request.form and 'sid' in request.form:
+            fname = request.form['name']
+            face_id=request.form['sid']
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('SELECT * FROM students WHERE fname = % s', (fname, ))
+            account = cursor.fetchone()
+            if account:
+                session['fname'] = account['fname']
+                vid_cam = cv2.VideoCapture(0)
+                face_detector = cv2.CascadeClassifier(cv2.data.haarcascades +'haarcascade_frontalface_default.xml')
+                count = 0
+                assure_path_exists("data/1")
+                while (True):
+                    # Capture video frame
+                    _, image_frame = vid_cam.read()
 
-                # Convert frame to grayscale
-                gray = cv2.cvtColor(image_frame, cv2.COLOR_BGR2GRAY)
+                    # Convert frame to grayscale
+                    gray = cv2.cvtColor(image_frame, cv2.COLOR_BGR2GRAY)
 
-                # Detect frames of different sizes, list of faces rectangles
-                faces = face_detector.detectMultiScale(gray, 1.3, 5)
+                    # Detect frames of different sizes, list of faces rectangles
+                    faces = face_detector.detectMultiScale(gray, 1.3, 5)
 
-                # Loops for each faces
-                for (x, y, w, h) in faces:
-                    # Crop the image frame into rectangle
-                    cv2.rectangle(image_frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
+                    # Loops for each faces
+                    for (x, y, w, h) in faces:
+                        # Crop the image frame into rectangle
+                        cv2.rectangle(image_frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
-                    # Increment sample face image
-                    count += 1
+                        # Increment sample face image
+                        count += 1
 
-                    # Save the captured image into the datasets folder
-                    cv2.imwrite("data/User." + str(face_id) + '.' + str(count) + ".jpg", gray[y:y + h, x:x + w])
+                        # Save the captured image into the datasets folder
+                        cv2.imwrite("data/User." + str(face_id) + '.' + str(count) + ".jpg", gray[y:y + h, x:x + w])
 
-                    # Display the video frame, with bounded rectangle on the person's face
-                    cv2.imshow('frame', image_frame)
+                        # Display the video frame, with bounded rectangle on the person's face
+                        cv2.imshow('frame', image_frame)
 
-                 # To stop taking video, press 'q' for at least 100ms
-                if cv2.waitKey(100) & 0xFF == ord('q'):
-                    break
+                    # To stop taking video, press 'q' for at least 100ms
+                    if cv2.waitKey(100) & 0xFF == ord('q'):
+                        break
 
-                # If image taken reach 100, stop taking video
-                elif count >= 50:
-                    print("Successfully Captured")
-                    msg='Successfully Captured'
-                    flash(msg)
-                    break
+                    # If image taken reach 100, stop taking video
+                    elif count >= 50:
+                        print("Successfully Captured")
+                        msg='Successfully Captured'
+                        flash(msg)
+                        break
 
-            # Stop video
-            vid_cam.release()
+                # Stop video
+                vid_cam.release()
 
-            # Close all started windows
-            cv2.destroyAllWindows()
-            return render_template('admin_dashboard.html')
-        else:
-            msg = 'Incorrect name'
-            flash(msg)
-    return render_template('add_photos.html')
+                # Close all started windows
+                cv2.destroyAllWindows()
+                msg = "Photos Captured Successfully!!"
+                print(msg)
+                flash(msg)
+                return redirect(url_for('admin_dashboard'))
+            else:
+                msg = 'Incorrect name'
+                flash(msg)
+                return redirect(url_for('add_photos'))
+        return render_template('add_photos.html')
+    else:
+        return redirect(url_for('login'))
+
 
 @app.route('/create_dataset',methods=['GET','POST'])
 def create_dataset():
@@ -240,6 +251,7 @@ def create_dataset():
 
 @app.route('/train',methods=['GET','POST'])
 def train():
+    msg = ''
     recognizer = cv2.face.LBPHFaceRecognizer_create()
     detector= cv2.CascadeClassifier(cv2.data.haarcascades +"haarcascade_frontalface_default.xml");
     def getImagesAndLabels(path):
@@ -267,10 +279,11 @@ def train():
 
     faces,Ids = getImagesAndLabels('data')
     s = recognizer.train(faces, np.array(Ids))
-    print("Successfully trained")
+    msg = "Successfully trained!!"
+    print(msg)
+    flash(msg)
     recognizer.write('model1.yml')
-
-    return render_template('train.html')
+    return redirect(url_for('admin_dashboard'))
 
 @app.route('/mark_attendance_details',methods=['GET','POST'])
 def mark_attendance_details():

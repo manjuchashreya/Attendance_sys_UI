@@ -10,40 +10,64 @@ $(document).ready(function(){
 </script> -->
 
 {% block body %}
-<div class="col-lg-12">
-  <div class="col-sm-12">
-    <a href='/logout'>
-      <h5 class="text-right"><i class="fa fa-user-circle" aria-hidden="true"></i> Logout</h5>
-    </a>
-    <h1 class="admin">Welcome, Admin</h1>
-  </div>
 
-  <div class="row">
-    <div class="col-md-3">
-      <a href="/register_student"><img src="../static/img/register.png" class="img-responsive" /></a>
+<div class="nav-buttons">
+  <a href="/">Home</a>
+  <a href="/">Back</a>
+  <a href='/logout'>Logout</a>
+</div>
+
+<div class="col-lg-12" style="margin-top: 5em;">
+  <div class="box">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="message-box">
+      {% for message in messages %}
+      <p id="alarmmsg">{{ message }}</p>
+      {% endfor %}
     </div>
-    <div class="col-md-3">
-      <a href="/add_photos"><img src="../static/img/addphotos.png" class="img-responsive" /></a>
+    {% else %}
+    <p id="alarmmsg"></p>
+    {% endif %}
+    {% endwith %}
+
+    <script>
+      setTimeout(function(){
+          document.getElementById("alarmmsg").innerHTML = '';
+      }, 5000);
+      console.log('{{session.name}}');
+    </script>
+    <div class="col-sm-12">
+      <h1 class="admin">Welcome, {{session.name}}</h1>
     </div>
-    <div class="col-md-3">
-      <a href="/train" id="train"><img src="../static/img/train.jpeg" class="img-responsive" /></a>
+
+    <div class="row">
+      <div class="col-md-3">
+        <a href="/register_student"><img src="../static/img/register.png" class="img-responsive" /></a>
+      </div>
+      <div class="col-md-3">
+        <a href="/add_photos"><img src="../static/img/addphotos.png" class="img-responsive" /></a>
+      </div>
+      <div class="col-md-3">
+        <a href="/train" id="train"><img src="../static/img/train.jpeg" class="img-responsive" /></a>
+      </div>
+      <div class="col-md-3">
+        <a href="/teacher_dashboard"><img src="../static/img/reports.png" class="img-responsive" /></a>
+      </div>
     </div>
-    <div class="col-md-3">
-      <a href="/teacher_dashboard"><img src="../static/img/reports.png" class="img-responsive" /></a>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col md-3">
-      <h4 class="text-center att">Register New Student</h4>
-    </div>
-    <div class="col md-3">
-      <h4 class="text-center att">Add Photos</h4>
-    </div>
-    <div class="col md-3">
-      <h4 class="text-center att">Train</h4>
-    </div>
-    <div class="col md-3">
-      <h4 class="text-center lgn">Dashboard</h4>
+    <div class="row">
+      <div class="col md-3">
+        <h4 class="text-center att">Register New Student</h4>
+      </div>
+      <div class="col md-3">
+        <h4 class="text-center att">Add Photos</h4>
+      </div>
+      <div class="col md-3">
+        <h4 class="text-center att">Train</h4>
+      </div>
+      <div class="col md-3">
+        <h4 class="text-center lgn">Dashboard</h4>
+      </div>
     </div>
   </div>
 </div>
