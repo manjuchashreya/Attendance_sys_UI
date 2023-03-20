@@ -15,6 +15,7 @@ import csv
 import pandas as pd
 from werkzeug.utils import secure_filename
 import json
+import ast
 
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -90,7 +91,7 @@ def login():
                 session['loggedin'] = True
                 session['student_id'] = account['student_id']
                 session['fname'] = account['fname']
-                return redirect(url_for('home'))
+                return redirect(url_for('student_home'))
             else:
                 msg = 'Incorrect Email or password !'
                 flash(msg)
@@ -236,6 +237,7 @@ def add_photos():
 def create_dataset():
     return render_template('train.html')
 
+
 @app.route('/train',methods=['GET','POST'])
 def train():
     recognizer = cv2.face.LBPHFaceRecognizer_create()
@@ -277,6 +279,10 @@ def mark_attendance_details():
 @app.route('/teacher_dashboard',methods=['GET','POST'])
 def teacher_dashboard():
     return render_template('teacher_dashboard.html')
+
+@app.route('/student_dashboard',methods=['GET','POST'])
+def student_dashboard():
+    return render_template('student_dashboard.html')
 
 @app.route('/live',methods=['GET','POST'])
 def live():
@@ -449,8 +455,6 @@ def upload():
                     #current_time = now.strftime("%H-%M-%S")
                 #lnwriter.writerow([val,current_time])
 
-import ast
-
 @app.route('/fetch_Attendance', methods=['GET','POST'])
 def fetch_Attendance():
     if request.method == 'POST':
@@ -469,7 +473,7 @@ def fetch_Attendance():
         ed2 = f'{ed1[2]}-{ed1[0]}-{ed1[1]}'
         print(sd2,ed2)
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute(f'SELECT * FROM attendance WHERE subject_name = "{UID}" OR subject_name = "{Blockchain}" OR subject_name = "{SM}" OR subject_name = "{BDA}" AND date BETWEEN "{sd2}" AND "{ed2}"')
+        cursor.execute(f'SELECT * FROM attendance WHERE subject_name = "{UID}" OR subject_name = "{Blockchain}" OR subject_name = "{SM}" OR subject_name = "{BDA}" AND date BETWEEN "{sd2}" AND "{ed2}" ')
         attendanceFetch = cursor.fetchall()
         csv_filename =  f'{sd2}TO{ed2}'
         if SM != None:
@@ -502,6 +506,42 @@ def excel():
         return redirect(url_for('teacher_dashboard'))
 
     return redirect(url_for('teacher_dashboard'))
+
+@app.route('/fetch_Attendance_student', methods=['GET','POST'])
+def fetch_Attendance_student():
+    if request.method == 'POST':
+        UID = request.form.get('UID') # [u'Item 1'] []
+        Blockchain = request.form.get('Blockchain') # [u'Item 2'] []
+        SM = request.form.get('SM') # [u'Item 3'] []
+        BDA = request.form.get('BDA')
+        startDate = request.form.get('start')
+        endDate = request.form.get('end')
+        # print(UID,Blockchain,SM,BDA,startDate,endDate)
+        sd = startDate.split(" ")
+        sd1 = sd[0].split('/')
+        sd2 = f'{sd1[2]}-{sd1[0]}-{sd1[1]}'
+        ed = endDate.split(" ")
+        ed1 = ed[0].split('/')
+        ed2 = f'{ed1[2]}-{ed1[0]}-{ed1[1]}'
+        # print(sd2,ed2)
+        login_student=session['fname']
+        print(login_student)
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        # cursor.execute(f'SELECT * FROM attendance WHERE subject_name = "{UID}" OR subject_name = "{Blockchain}" OR subject_name = "{SM}" OR subject_name = "{BDA}" AND date BETWEEN "{sd2}" AND "{ed2}" AND ')
+        cursor.execute(f'SELECT a.date,a.time,s.fname,a.subject_name FROM attendance a,students s WHERE a.student_id=s.student_id AND (a.subject_name = "{UID}" OR a.subject_name = "{Blockchain}" OR a.subject_name = "{SM}" OR a.subject_name = "{BDA}") AND (a.date BETWEEN "{sd2}" AND "{ed2}") AND s.fname="{login_student}"')
+        attendanceFetch = cursor.fetchall()
+        print(attendanceFetch)
+        csv_filename =  f'{sd2}TO{ed2}'
+        if SM != None:
+            csv_filename = csv_filename + f'_{SM}'
+        if Blockchain != None:
+            csv_filename = csv_filename + f'_{Blockchain}'
+        if BDA != None:
+            csv_filename = csv_filename + f'_{BDA}'
+        if UID != None:
+            csv_filename = csv_filename + f'_{UID}'
+        return render_template('student_dashboard.html',attendanceFetch = attendanceFetch, csv_filename = csv_filename)
+    return render_template('student_dashboard.html')
 
 @app.route('/mark_your_attendance',methods=['GET','POST'])
 def mark_your_attendance():

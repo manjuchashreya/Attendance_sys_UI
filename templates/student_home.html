@@ -1,42 +1,66 @@
 {% extends 'base.html' %}
 
 {% block body %}
-
-
 <div class="col-lg-12">
     <div class="col-sm-12">
-      <a href="{% url 'logout' %}">
-        <h5 class="text-right"><i class="fa fa-user-circle" aria-hidden="true"></i> Logout</h5>
-      </a>
-      <h1 class="student">Welcome, student name</h1>
+        <h1>Attendance System Using Face Recognition</h1>
     </div>
     <div class="row">
         <div class="col-md-4">
             <a href='/mark_attendance_details'><img src="../static/img/enter.png" class="img-responsive" /></a>
         </div>
 
+        {% if 'loggedin' in session %}
         <div class="col-md-4">
-            <a href='/mark-your-attendance-out'><img src="../static/img/exit.png" class="img-responsive" /></a>
+            <a href='/student_dashboard'><img src="../static/img/reports.png" class="img-responsive" /></a>
+        </div>
+        {% else %}
+
+        <div class="col-md-4">
+            <a href='/logout'><img src="../static/img/exit.png" class="img-responsive" /></a>
         </div>
 
+        {% endif %}
+
+        {% if 'loggedin' in session %}
+        <div class="col-md-4">
+            <a href='/logout'><img src="../static/img/exit.png" class="img-responsive" /></a>
+        </div>
+        {% else %}
         <div class="col-md-4">
             <a href="/login"><img src="../static/img/login.png" class="img-responsive" /></a>
         </div>
+        {% endif %}
+        
+
     </div>
 
     <div class="row">
         <div class="col md-3">
             <h4 class="text-center">Mark Your Attendance - In</h4>
         </div>
+        {% if 'loggedin' in session %}
+        <div class="col md-3">
+            <h4 class="text-center">Dashboard</h4>
+        </div>
+        {% else %}
         <div class="col md-3">
             <h4 class="text-center">Mark Your Attendance - Out </h4>
         </div>
+        {% endif %}
+
+        {% if 'loggedin' in session %}
+        <div class="col md-3">
+            <h4 class="text-center">Log Out </h4>
+        </div>
+        {% else %}
         <div class="col md-3">
             <h4 class="text-center">Log In </h4>
         </div>
+        {% endif %}
     </div>
 </div>
 
+
+
 {% endblock body %}
-
-
