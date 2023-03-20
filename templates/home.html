@@ -3,7 +3,13 @@
 {% block body %}
 <div class="col-lg-12">
     <div class="col-sm-12">
+        {% if ('loggedin' in session) and (session.isTeacher) %}
+        <h1>Welcome, {{session.tname}}</h1>
+        {% elif 'loggedin' in session %}
+        <h1>Welcome, {{session.fname}}</h1>
+        {% else %}
         <h1>Attendance System Using Face Recognition</h1>
+        {% endif %}
     </div>
     <div class="row">
         {% if 'loggedin' in session %}
@@ -21,10 +27,20 @@
         </div>
         {% endif %}
 
-        {% if 'loggedin' in session %}
+        {% if ('loggedin' in session) and (session.isTeacher) %}
+        <script>
+            console.log('hello' + '{{ session.isTeacher }}');
+        </script>
         <div class="col-md-4">
             <a href='/teacher_dashboard'><img src="../static/img/reports.png" class="img-responsive" /></a>
         </div>
+
+        {% elif 'loggedin' in session %}
+
+        <div class="col-md-4">
+            <a href='/student_dashboard'><img src="../static/img/reports.png" class="img-responsive" /></a>
+        </div>
+
         {% else %}
 
         <div class="col-md-4">

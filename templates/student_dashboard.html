@@ -31,7 +31,6 @@
   </nav>
   <div class="nav-buttons">
     <a href="/">Home</a>
-    <a href="/student_home">Back</a>
   </div>
   <div class="container">
 
@@ -114,14 +113,7 @@
           
           <div class="per">
           </div>
-          <button type="submit">Fetch Data</button>
-          <script>
-            if ( '{{ csv_filename }}' != '')
-            {
-              var csv_name = '{{ csv_filename }}'
-              localStorage.setItem('filename', csv_name )
-            }
-          </script>
+          <button type="submit">Refresh</button>
         </div>
       </div>
     </form>
@@ -130,19 +122,6 @@
         <div class="attendance-list">
           <div class="download_box">
             <h1>Attendance List</h1>
-            <form action="/excel" method="post">
-              <input type="hidden" name="csv_filename" id="csv_filename">
-              <input type="hidden" name="UI_attend" value="{{ attendanceFetch }}">
-              <button onclick="submitForm()" type="submit"><i class="fa fa-download"></i></button></form>
-              <script>
-              function submitForm()
-              {
-                  let csv_name1 = localStorage.getItem('filename');
-            
-                  // set the value of the hidden input
-                  document.getElementById("csv_filename").value = csv_name1;
-              }
-              </script>
           </div>
           <table class="table">
             <thead>

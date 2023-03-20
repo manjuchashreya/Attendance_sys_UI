@@ -73,24 +73,42 @@ def login():
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         value=request.form.get('teacher')
         if value=="1":
-            cursor.execute('SELECT * FROM teachers WHERE temail = % s AND password = % s', (username, password, ))
-            account = cursor.fetchone()
-            if account:
-                session['loggedin'] = True
-                session['tid'] = account['tid']
-                session['name'] = account['tname']
-                return redirect(url_for('admin_dashboard'))
+            if password == 'Tsec2023':
+                cursor.execute('SELECT * FROM teachers WHERE temail = % s AND password = % s', (username, password, ))
+                account = cursor.fetchone()
+                if account:
+                    session['loggedin'] = True
+                    session['tid'] = account['tid']
+                    session['tname'] = account['tname']
+                    session['isTeacher'] = True
+                    session['isAdmin'] = True
+                    return redirect(url_for('admin_dashboard'))
+                else:
+                    msg = 'Incorrect Email or password !'
+                    flash(msg)
+                    return redirect(url_for('login'))
             else:
-                msg = 'Incorrect Email or password !'
-                flash(msg)
-                return redirect(url_for('login'))
+                cursor.execute('SELECT * FROM teachers WHERE temail = % s AND password = % s', (username, password, ))
+                account = cursor.fetchone()
+                if account:
+                    session['loggedin'] = True
+                    session['tid'] = account['tid']
+                    session['tname'] = account['tname']
+                    session['isTeacher'] = True
+                    session['isAdmin'] = False
+                    return redirect(url_for('home'))
+                else:
+                    msg = 'Incorrect Email or password !'
+                    flash(msg)
+                    return redirect(url_for('login'))
         else:
             cursor.execute('SELECT * FROM students WHERE semail = % s AND student_id = % s', (username, password, ))
             account = cursor.fetchone()
             if account:
                 session['loggedin'] = True
                 session['student_id'] = account['student_id']
-                session['name'] = account['fname']
+                session['fname'] = account['fname']
+                session['isTeacher'] = False
                 return redirect(url_for('home'))
             else:
                 msg = 'Incorrect Email or password !'
@@ -134,10 +152,6 @@ def admin_dashboard():
         return render_template('admin_dashboard.html')
     else:
         return redirect(url_for('login'))
-
-@app.route('/student_home',methods=['GET','POST'])
-def student_home():
-    return render_template('student_home.html')
 
 @app.route('/register_student',methods=['GET','POST'])
 def register_student():
@@ -522,39 +536,42 @@ def excel():
 
 @app.route('/fetch_Attendance_student', methods=['GET','POST'])
 def fetch_Attendance_student():
-    if request.method == 'POST':
-        UID = request.form.get('UID') # [u'Item 1'] []
-        Blockchain = request.form.get('Blockchain') # [u'Item 2'] []
-        SM = request.form.get('SM') # [u'Item 3'] []
-        BDA = request.form.get('BDA')
-        startDate = request.form.get('start')
-        endDate = request.form.get('end')
-        # print(UID,Blockchain,SM,BDA,startDate,endDate)
-        sd = startDate.split(" ")
-        sd1 = sd[0].split('/')
-        sd2 = f'{sd1[2]}-{sd1[0]}-{sd1[1]}'
-        ed = endDate.split(" ")
-        ed1 = ed[0].split('/')
-        ed2 = f'{ed1[2]}-{ed1[0]}-{ed1[1]}'
-        # print(sd2,ed2)
-        login_student=session['fname']
-        print(login_student)
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        # cursor.execute(f'SELECT * FROM attendance WHERE subject_name = "{UID}" OR subject_name = "{Blockchain}" OR subject_name = "{SM}" OR subject_name = "{BDA}" AND date BETWEEN "{sd2}" AND "{ed2}" AND ')
-        cursor.execute(f'SELECT a.date,a.time,s.fname,a.subject_name FROM attendance a,students s WHERE a.student_id=s.student_id AND (a.subject_name = "{UID}" OR a.subject_name = "{Blockchain}" OR a.subject_name = "{SM}" OR a.subject_name = "{BDA}") AND (a.date BETWEEN "{sd2}" AND "{ed2}") AND s.fname="{login_student}"')
-        attendanceFetch = cursor.fetchall()
-        print(attendanceFetch)
-        csv_filename =  f'{sd2}TO{ed2}'
-        if SM != None:
-            csv_filename = csv_filename + f'_{SM}'
-        if Blockchain != None:
-            csv_filename = csv_filename + f'_{Blockchain}'
-        if BDA != None:
-            csv_filename = csv_filename + f'_{BDA}'
-        if UID != None:
-            csv_filename = csv_filename + f'_{UID}'
-        return render_template('student_dashboard.html',attendanceFetch = attendanceFetch, csv_filename = csv_filename)
-    return render_template('student_dashboard.html')
+    if 'loggedin' in session and session['isTeacher']==False:
+        if request.method == 'POST':
+            UID = request.form.get('UID') # [u'Item 1'] []
+            Blockchain = request.form.get('Blockchain') # [u'Item 2'] []
+            SM = request.form.get('SM') # [u'Item 3'] []
+            BDA = request.form.get('BDA')
+            startDate = request.form.get('start')
+            endDate = request.form.get('end')
+            # print(UID,Blockchain,SM,BDA,startDate,endDate)
+            sd = startDate.split(" ")
+            sd1 = sd[0].split('/')
+            sd2 = f'{sd1[2]}-{sd1[0]}-{sd1[1]}'
+            ed = endDate.split(" ")
+            ed1 = ed[0].split('/')
+            ed2 = f'{ed1[2]}-{ed1[0]}-{ed1[1]}'
+            # print(sd2,ed2)
+            login_student=session['fname']
+            print(login_student)
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            # cursor.execute(f'SELECT * FROM attendance WHERE subject_name = "{UID}" OR subject_name = "{Blockchain}" OR subject_name = "{SM}" OR subject_name = "{BDA}" AND date BETWEEN "{sd2}" AND "{ed2}" AND ')
+            cursor.execute(f'SELECT a.date,a.time,s.fname,a.subject_name FROM attendance a,students s WHERE a.student_id=s.student_id AND (a.subject_name = "{UID}" OR a.subject_name = "{Blockchain}" OR a.subject_name = "{SM}" OR a.subject_name = "{BDA}") AND (a.date BETWEEN "{sd2}" AND "{ed2}") AND s.fname="{login_student}"')
+            attendanceFetch = cursor.fetchall()
+            print(attendanceFetch)
+            csv_filename =  f'{sd2}TO{ed2}'
+            if SM != None:
+                csv_filename = csv_filename + f'_{SM}'
+            if Blockchain != None:
+                csv_filename = csv_filename + f'_{Blockchain}'
+            if BDA != None:
+                csv_filename = csv_filename + f'_{BDA}'
+            if UID != None:
+                csv_filename = csv_filename + f'_{UID}'
+            return render_template('student_dashboard.html',attendanceFetch = attendanceFetch, csv_filename = csv_filename)
+        return render_template('student_dashboard.html')
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/mark_your_attendance',methods=['GET','POST'])
 def mark_your_attendance():
@@ -622,9 +639,18 @@ def mark_your_attendance():
 
 @app.route('/logout',methods=['GET','POST'])
 def logout():
-    session.pop('loggedin', None)
-    session.pop('tid', None)
-    session.pop('username', None)
+    if 'loggedin' in session:
+        session.pop('loggedin', None)
+        if session['isTeacher']:
+            if session['isAdmin']:
+                session.pop('isAdmin', None)
+            session.pop('tid', None)
+            session.pop('tname', None)
+            session.pop('isTeacher', None)
+        else:
+            session.pop('student_id', None)
+            session.pop('fname', None)
+            session.pop('isTeacher', None)
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
