@@ -258,11 +258,6 @@ def add_photos():
         return redirect(url_for('login'))
 
 
-@app.route('/create_dataset',methods=['GET','POST'])
-def create_dataset():
-    return render_template('train.html')
-
-
 @app.route('/train',methods=['GET','POST'])
 def train():
     msg = ''
@@ -385,25 +380,10 @@ def live():
 
 @app.route('/upload',methods=['GET','POST'])
 def upload():
-    # class_names = {1:"Shreya",2:"Shreyatwo", 3:"Muskan",4:"Kumkum", 1903064:"shreya3"}#,2:"Muskan",3:"Balaji",4:"Tejashree"} #name of people
-    now = datetime.now()
-    current_date = now.strftime("%Y-%m-%d")
-    current_time = now.strftime("%H:%M:%S")
-    print(current_date)
-    # load the model from disk
-    filename = "model1.yml"
-    
-    #f = pd.read_csv('attendance.csv')
-    # Initialize LPBH model object and load the model
-    lbph_face_classifier = cv2.face.LBPHFaceRecognizer_create()
-    lbph_face_classifier.read(filename)
-    cap=cv2.VideoCapture(0)
-    cap.set(3,640) # set Width
-    cap.set(4,480) # set Height'''
-    font = cv2.FONT_HERSHEY_SIMPLEX
-    face_classifier = cv2.CascadeClassifier(cv2.data.haarcascades +"haarcascade_frontalface_default.xml")
-   # sub_name="SM"
     if request.method == 'POST':
+        msg = ''
+        sub_name=request.form.get('subjopt')
+        print(sub_name)  
         # check if the post request has the file part
         if 'studentImg' not in request.files:
             flash('No file part')
@@ -419,6 +399,22 @@ def upload():
         if Uploaded_file and allowed_file(Uploaded_file.filename):
             Uploaded_file.save(os.path.join('./upload_Img', secure_filename(Uploaded_file.filename)))
             print('Image Uploaded successfully!!')
+
+            now = datetime.now()
+            current_date = now.strftime("%Y-%m-%d")
+            current_time = now.strftime("%H:%M:%S")
+            print(current_date)
+            # load the model from disk
+            filename = "model1.yml"
+
+            # Initialize LPBH model object and load the model
+            lbph_face_classifier = cv2.face.LBPHFaceRecognizer_create()
+            lbph_face_classifier.read(filename)
+            cap=cv2.VideoCapture(0)
+            cap.set(3,640) # set Width
+            cap.set(4,480) # set Height'''
+            font = cv2.FONT_HERSHEY_SIMPLEX
+            face_classifier = cv2.CascadeClassifier(cv2.data.haarcascades +"haarcascade_frontalface_default.xml")
     
             # Read the image
             cap = cv2.imread(f"upload_Img/{Uploaded_file.filename}")
@@ -429,9 +425,6 @@ def upload():
             # Using HaarCascasde detect multiple faces
             faces = face_classifier.detectMultiScale(gray,1.3,5) #Scaling factor = 1.3 , minNeighbors = 5
 
-        if request.method == 'POST':
-            sub_name=request.form.get('subjopt')
-            print(sub_name)  
             for (x,y,w,h) in faces:
                 cv2.rectangle(cap,(x,y),(x+w,y+h),(255,0,0),2)
                 cropped_image = cap[y:y+h, x:x+w] 
@@ -456,31 +449,17 @@ def upload():
                     if account:
                         cursor.execute('INSERT INTO attendance VALUES (NULL, % s, % s, % s,% s, % s, % s)', (current_date,current_time, sid, val,sub_name,"Present"))
                         mysql.connection.commit()
-
-                        #current_time = now.strftime("%H-%M-%S")
-                        #lnwriter.writerow([val,current_date])
-
-            # Shows the result and save it as per name given in Results folder 
-            cv2.imshow('Recognised Faces',cap)
-
-            
-            parent= "Results"
-            directory = "LPBH_model_results"
-            path=os.path.join(parent,directory)
-            os.makedirs(path,exist_ok=True)
-            #file_name = input('Enter name to save the result:')
-            file_name_path=f"Results/{directory}/{sid}.jpg"
-            cv2.imwrite(f'{file_name_path}',cap)
-
-            # Destroy all windows and return to menu
-            # cap.release()
-            cv2.destroyAllWindows()
-            return render_template('home.html')
+                        cv2.destroyAllWindows()
+                        msg = 'Attendance Marked Successfully!!'
+                        flash(msg)
+                        return redirect(url_for('home'))
                     
-            #cv2.imshow('video',img)
-            #return render_template('home.html')
-                    #current_time = now.strftime("%H-%M-%S")
-                #lnwriter.writerow([val,current_time])
+            cv2.destroyAllWindows()
+            msg = 'Attendance Not Marked!!'
+            flash(msg)
+            return redirect(url_for('home'))
+
+    return redirect(url_for('home'))
 
 @app.route('/fetch_Attendance', methods=['GET','POST'])
 def fetch_Attendance():
@@ -573,69 +552,6 @@ def fetch_Attendance_student():
     else:
         return redirect(url_for('login'))
 
-@app.route('/mark_your_attendance',methods=['GET','POST'])
-def mark_your_attendance():
-    class_names = {1:"Shreya",2:"Shreyatwo", 3:"Muskan",4:"Kumkum"}#,2:"Muskan",3:"Balaji",4:"Tejashree"} #name of people
-
-    # load the model from disk
-    filename = "model1.yml"
-    
-    f = pd.read_csv('attendance.csv')
-    # Initialize LPBH model object and load the model
-    lbph_face_classifier = cv2.face.LBPHFaceRecognizer_create()
-    lbph_face_classifier.read(filename)
-    cap=cv2.VideoCapture(0)
-    cap.set(3,640) # set Width
-    cap.set(4,480) # set Height'''
-    font = cv2.FONT_HERSHEY_SIMPLEX
-    face_classifier = cv2.CascadeClassifier(cv2.data.haarcascades +"haarcascade_frontalface_default.xml")
-    
-    while True:
-        ret, img = cap.read()
-        
-        if ret == False:
-            print('Camera is not on')
-            break
-        else:
-            gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-            faces = face_classifier.detectMultiScale(gray,1.3,5)
-        #Scaling factor 1.3
-        # Minimum naber 5
-            for (x,y,w,h) in faces:
-                cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
-                cropped_image = img[y:y+h, x:x+w] 
-                IMG_SIZE=450
-                color_img = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY)
-
-            #cnnModel(color_img)
-
-                predictions = lbph_face_classifier.predict(color_img)
-                print(predictions)
-                value=int(predictions[0])
-                name= class_names[predictions[0]]
-                cv2.putText(img, str(class_names[predictions[0]]), (x+5,y-5), font, 1, (255,0,255), 2)
-                cv2.putText(img, str(round(predictions[1],2))+"%", (x+5,y+h-5), font, 1, (255,255,0), 1)
-                #name=predictions[0]
-            #print()
-                if class_names[predictions[0]] in class_names.values():
-                    val=str(class_names[predictions[0]])
-                    print(val)
-                    f.loc[value-1, 'Name'] = name
-                    f.loc[value-1, 'Attendance'] = "Present"
-                    print("yes")
-                    cap.release()
-                    cv2.destroyAllWindows()
-                    f.to_csv('attendance.csv', index=False)
-                    return render_template('home.html')
-            cv2.imshow('video',img)        
-                    #cv2.waitKey(100) 
-                    
-            #cv2.imshow('video',img)
-            #return render_template('home.html')
-                    #current_time = now.strftime("%H-%M-%S")
-                #lnwriter.writerow([val,current_time])
-            
-    return render_template('home.html')
 
 @app.route('/logout',methods=['GET','POST'])
 def logout():

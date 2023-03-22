@@ -3,6 +3,22 @@
 {% block body %}
 <div class="col-lg-12">
     <div class="col-sm-12">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="message-box">
+        {% for message in messages %}
+        <p id="alarmmsg1">{{ message }}</p>
+        {% endfor %}
+        </div>
+        {% else %}
+        <p id="alarmmsg"></p>
+        {% endif %}
+        {% endwith %}
+        <script>
+            setTimeout(function(){
+                document.getElementById("alarmmsg1").innerHTML = '';
+            }, 5000);
+        </script>
         {% if ('loggedin' in session) and (session.isTeacher) %}
         <h1>Welcome, {{session.tname}}</h1>
         {% elif 'loggedin' in session %}
