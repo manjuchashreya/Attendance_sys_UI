@@ -16,12 +16,13 @@ import pandas as pd
 from werkzeug.utils import secure_filename
 import json
 import ast
+import mysql.connector as msc
 
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 SEND_VARIABLE = {}
 
-class_names = {1903064:"Shreya Manjucha" , 1903032: "Muskan Gupta", 1903091:"Rishabh Raghuvanshi", 1903123:"Unnati Sarothi",1903129:"Tejashree Tambe", 1903139:"Balaji Wadawadagi"}#,2:"Muskan",3:"Balaji",4:"Tejashree"} #name of people
+# class_names = {1903064:"Shreya Manjucha" , 1903032: "Muskan Gupta", 1903091:"Rishabh Raghuvanshi", 1903123:"Unnati Sarothi",1903129:"Tejashree Tambe", 1903139:"Balaji Wadawadagi"}#,2:"Muskan",3:"Balaji",4:"Tejashree"} #name of people
 
 now = datetime.now()
 current_date = now.strftime("%Y-%m-%d")
@@ -48,6 +49,19 @@ def assure_path_exists(path):
 
 def allowed_file(filename):     
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def class_names_fn():
+    db=msc.connect(host="localhost", user="root", password=db_password ,database="attendance_system")
+    cursor=db.cursor()
+    cursor.execute("SELECT student_id, fname FROM attendance_system.students")
+    class_names = {}
+    for table_name in cursor:
+        class_names[table_name[0]] = table_name[1]
+    print(class_names)
+    return class_names
+
+class_names_fn()
 
 @app.route('/',methods=['GET','POST'])
 def home():
@@ -316,7 +330,7 @@ def live():
     # load the model from disk
     filename = "model1.yml"
     
-    f = pd.read_csv('attendance.csv')
+    # f = pd.read_csv('attendance.csv')
     # Initialize LPBH model object and load the model
     lbph_face_classifier = cv2.face.LBPHFaceRecognizer_create()
     lbph_face_classifier.read(filename)
@@ -349,6 +363,7 @@ def live():
                 #print(predictions)
                 #value=int(predictions[0])
                 #name= class_names[predictions[0]]
+                class_names= class_names_fn()
                 cv2.putText(img, str(class_names[predictions[0]]), (x+5,y-5), font, 1, (255,0,255), 2)
                 cv2.putText(img, str(round(predictions[1],2))+"%", (x+5,y+h-5), font, 1, (255,255,0), 1)
                 sid=predictions[0]
@@ -434,6 +449,7 @@ def upload():
                 predictions = lbph_face_classifier.predict(color_img)
                 print(predictions)
                 sid=predictions[0]
+                class_names= class_names_fn()
                 name= class_names[predictions[0]]
                 cv2.putText(cap, class_names[predictions[0]], (x+5,y-5), font, 1, (255,0,255), 2)
                 cv2.putText(cap, str(round(predictions[1],2))+"%", (x+5,y+h-5), font, 1, (255,255,0), 1)
