@@ -1,0 +1,6 @@
+attendance_id,date,time,student_id,student_fname,subject_name,attendance
+5,2023-03-15,11:32:03,1903064,Shreya Manjucha,UID,Present
+6,2023-03-20,23:59:38,1903032,Muskan Gupta,UID,Present
+15,2023-03-22,18:25:33,1903064,Shreya Manjucha,UID,Present
+16,2023-03-22,18:25:33,1903032,Muskan Gupta,UID,Present
+18,2023-03-28,19:38:10,1903064,Shreya Manjucha,UID,Present

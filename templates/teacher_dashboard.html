@@ -31,7 +31,13 @@
   </nav>
   <div class="nav-buttons">
     <a href="/">Home</a>
+    {% if ('loggedin' in session) and (session.isAdmin) %}
     <a href="/admin_dashboard">Back</a>
+    {% else %}
+    <a href="/">Back</a>
+    {% endif %}
+
+    
   </div>
   <div class="container">
 

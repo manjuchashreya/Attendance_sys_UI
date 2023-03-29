@@ -17,6 +17,65 @@
     <div class="dropdown mb-2">
       
 
+      <div class="d-flex justify-content-center mt-2">
+        <button  class="btn btn-primary mb-2 text-center" id="switchAlgoBtn" onclick="switchAlgo()">Try Face_Recognizer</button>
+      </div>
+
+      <script>
+        function switchAlgo() {
+          let btn = document.getElementById("switchAlgoBtn")
+          if(btn.innerText == "Try Face_Recognizer")
+          {
+            var x = document.getElementById("myDiv2");
+              x.style.display = "none";
+            var y = document.getElementById("myDiv1");
+              y.style.display = "block";
+              btn.innerText = "Try LPBH Model"
+              btn.classList.remove("btn-primary")
+              btn.classList.add("btn-warning")
+            }
+            else{
+              var x = document.getElementById("myDiv1");
+              x.style.display = "none";
+              var y = document.getElementById("myDiv2");
+              y.style.display = "block";
+              btn.innerText = "Try Face_Recognizer"
+              btn.classList.remove("btn-warning")
+              btn.classList.add("btn-primary")
+          }
+        }
+      </script>
+
+
+      <div id="myDiv1">
+        <form action="/face_Recognizer" method="post" enctype="multipart/form-data">
+          <select class="form-control" name="subjopt">
+            <option selected>Select Subject</option>
+            <option value="UID">UID</option>
+            <option value="Blockchain">Blockchain</option>
+            <option value="SM">SM</option>
+            <option value="BDA">BDA</option>
+          </select>
+          <div class="dropdown-menu btn-block" aria-labelledby="dropdownMenuButton">
+            <div class="form-group dropdown-item btn-block">
+              <label for="studentImg">Upload Student Image</label>
+              <input type="file" class="form-control-file" id="studentImg" name="studentImg">
+            </div>
+          </div>
+          <button class="btn btn-outline-success btn-lg btn-block dropdown-toggle" type="button" id="dropdownMenuButton"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Static
+          </button>
+
+          <a href="/live_Face_Recognizer" type="button" class="mt-2 btn btn-outline-danger btn-lg btn-block">Live</a>
+
+          <div class="d-flex justify-content-center mt-2">
+            <button type="submit" class="btn btn-primary">Mark Your Attendance</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="myDiv2" style="display: none;">
       <form action="/upload" method="post" enctype="multipart/form-data">
         <select class="form-control" name="subjopt">
           <option selected>Select Subject</option>
@@ -31,16 +90,18 @@
             <input type="file" class="form-control-file" id="studentImg" name="studentImg">
           </div>
         </div>
-        <button class="btn btn-outline-success btn-lg btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-outline-success btn-lg btn-block dropdown-toggle" type="button" id="dropdownMenuButton"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Static
         </button>
-       
+
         <a href="/live" type="button" class="mt-2 btn btn-outline-danger btn-lg btn-block">Live</a>
-        
+
         <div class="d-flex justify-content-center mt-2">
           <button type="submit" class="btn btn-primary">Upload</button>
         </div>
       </form>
+      </div>
 
     </div>
 
