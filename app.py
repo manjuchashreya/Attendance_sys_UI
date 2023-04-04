@@ -645,7 +645,10 @@ def face_Recognizer():
                         rgb_small_frame = small_frame[:, :, ::-1]
 
             # Find all the faces and face encodings in the current frame of video
-                        self.face_locations = face_recognition.face_locations(rgb_small_frame)
+                        self.face_locations = face_recognition.face_locations(rgb_small_frame,model="cnn")
+                        a=self.face_locations
+                        print(len(a))
+                        #self.face_locations = face_recognition.face_locations(rgb_small_frame, number_of_times_to_upsample=0, model="cnn")
                         self.face_encodings = face_recognition.face_encodings(rgb_small_frame, self.face_locations)
                         print("hello")
             #print(self.face_locations[1:3])
